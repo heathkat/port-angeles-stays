@@ -7,13 +7,18 @@
     const accessNotes = {};
     const money = new Intl.NumberFormat('en-US',{ style:'currency', currency:'USD' });
     const areaLabels = { downtown_port_angeles:'Downtown Port Angeles', wider_port_angeles:'Wider Port Angeles', sequim:'Sequim', joyce:'Joyce', unknown:'Area unconfirmed' };
-    const providerLabels = { airbnb:'Airbnb', vrbo:'Vrbo', booking:'Booking.com', brigadoon:'Brigadoon', olympic_coast_retreats:'Olympic Coast Retreats', port_angeles_inn:'Port Angeles Inn (direct)' };
+    const providerLabels = { airbnb:'Airbnb', vrbo:'Vrbo', booking:'Booking.com', brigadoon:'Brigadoon', olympic_coast_retreats:'Olympic Coast Retreats', port_angeles_inn:'Port Angeles Inn (direct)', furnished_finder:'Furnished Finder' };
     const escapeHtml = value => String(value).replace(/[&<>"']/g,character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
     const checkedDateFormat = new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
     const tripDateFormat = new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'});
     const displayDate = value => checkedDateFormat.format(new Date(value));
     function tripSummary(trip) {
       return `${tripDateFormat.formatRange(new Date(trip.checkIn),new Date(trip.checkOut))} \u00b7 ${trip.nights} nights \u00b7 ${trip.adults} ${trip.adults === 1 ? 'adult' : 'adults'}`;
+    }
+    function sourceCoverageHtml(entry) {
+      const label = {verified:'A trip price was checked.',leads_only:'Listings found; prices not checked.',partially_verified:'Some details checked.',not_authorized:'Listing collection not authorized.',not_searched:'Not checked in this update.',blocked:'Could not check.'}[entry.status] || 'See research notes.';
+      const link = entry.url ? `<p><a href="${escapeHtml(entry.url)}" target="_blank" rel="noopener noreferrer">Browse this source directly</a></p>` : '';
+      return `<strong>${escapeHtml(providerLabels[entry.provider] || entry.provider)}:</strong> ${escapeHtml(label)}${link}<details><summary>Research notes</summary><p>${escapeHtml(entry.details)}</p></details>`;
     }
     function publishedCardHtml(stay,item,link,noteUnsaved,uncertain) {
       const kitchen = {full:'Full kitchen listed',kitchenette:'Kitchenette listed',none:'No kitchen',unknown:'Kitchen: not confirmed'}[stay.amenities.kitchen];
@@ -28,14 +33,15 @@
         : washer.state === 'unknown' && dryer.state === 'unknown' ? 'Laundry: not confirmed'
           : `${machineText('Washer',washer)}; ${machineText('dryer',dryer)}`;
       const route = stay.proximity;
+      const routeDescription = route.description || '';
       const mappedWalk = route.basis === 'verified_route' && route.walkingMinutes !== null;
       const location = mappedWalk ? `About ${route.walkingMinutes} minutes to ${route.destination.includes('(downtown shopping reference)') ? 'downtown shops' : route.destination} (map estimate)`
-        : route.description.includes('across from Field Arts Hall') ? 'Downtown, across from Field Arts Hall'
-          : route.description.includes('short drive') ? 'A short drive to downtown, per listing'
+        : routeDescription.includes('across from Field Arts Hall') ? 'Downtown, across from Field Arts Hall'
+          : routeDescription.includes('short drive') ? 'A short drive to downtown, per listing'
             : `${areaLabels[stay.area]} \u00b7 Walk to downtown not checked`;
       let access = stay.amenities.stairs === 'yes' ? 'Stairs listed; ask about access.' : stay.amenities.stairs === 'unknown' ? 'Ask about stairs and access.' : '';
       if (stay.tradeoffs.some(note => note.includes('full bathroom is upstairs'))) access = 'Full bathroom upstairs.';
-      if (route.description.includes('return involves climbing')) access = 'Uphill return; the downtown shortcut uses steps.';
+      if (routeDescription.includes('return involves climbing')) access = 'Uphill return; the downtown shortcut uses steps.';
       if (stay.tradeoffs.some(note => note.includes('double/full, not a queen or king'))) access += ' Main bed: double/full, not queen or king.';
       if (stay.tradeoffs.some(note => note.includes('Hotel says no A/C'))) access += ' No air conditioning.';
       const name = stay.name.replace(/ - Queen \/ non-harbor view \(direct\)$/,'');
@@ -92,7 +98,8 @@
       const nights = (Date.parse(data.trip.checkOut) - Date.parse(data.trip.checkIn)) / 86400000;
       if (new Date(data.trip.checkIn).toISOString().slice(0,10) !== data.trip.checkIn || new Date(data.trip.checkOut).toISOString().slice(0,10) !== data.trip.checkOut) fail('Trip dates are invalid.');
       if (!Number.isInteger(nights) || nights < 1 || nights !== data.trip.nights) fail('Trip dates and night count disagree.');
-      if (!data.coverage.every(entry => object(entry) && text(entry.provider) && text(entry.status) && text(entry.details))) fail('Source coverage is incomplete.');
+      if (!data.coverage.every(entry => object(entry) && text(entry.provider) && text(entry.status) && text(entry.details) &&
+          (entry.url === undefined || (text(entry.url) && /^https:\/\/[^/\s]+(?:\/|$)/i.test(entry.url))))) fail('Source coverage is incomplete or has an invalid source link.');
       const ids = new Set();
       return data.candidates.map((candidate,index) => {
         const amenities = candidate.amenities;
@@ -421,7 +428,7 @@
       document.getElementById('area').value = data ? '2' : '0';
       if (publishedView) {
         const otherAreas = stays.some(stay => !['downtown_port_angeles','wider_port_angeles'].includes(stay.area));
-        document.getElementById('area').value = otherAreas ? '2' : '1';
+        document.getElementById('area').value = '1';
         document.querySelector('#area option[value="2"]').hidden = !otherAreas;
         document.querySelectorAll('[data-import-only]').forEach(option => {
           const area = {3:'sequim',4:'joyce',5:'unknown'}[option.value];
@@ -436,7 +443,7 @@
       if (![...guests.options].some(option => option.value === adults)) guests.add(new Option(adults,adults));
       guests.value = adults;
       document.getElementById('demo').textContent = publishedView ? 'Prices and availability can change. Confirm with the property before booking.' : data ? 'Collected JSON preview / evidence-tagged snapshots / no live search or publication' : 'Clickable mockup / November 21, 2026 price snapshots. Search does not contact booking sites.';
-      document.getElementById('dataset-note').textContent = publishedView ? `Research collected ${displayDate(data.createdAt)}. Listing details may be older.` : data ? `Loaded ${data.candidates.length} leads from snapshot ${data.datasetId}, collected ${data.createdAt}. Data stays in this view until reload; reselect the JSON then. Favorites and notes remain separate.` : 'Local preview only. Loading a file does not publish it or contact booking sites.';
+      document.getElementById('dataset-note').textContent = publishedView ? `Research collected ${displayDate(data.createdAt)}. Partial collection, not every available stay. Listing details may be older.` : data ? `Loaded ${data.candidates.length} leads from snapshot ${data.datasetId}, collected ${data.createdAt}. Data stays in this view until reload; reselect the JSON then. Favorites and notes remain separate.` : 'Local preview only. Loading a file does not publish it or contact booking sites.';
       document.getElementById('source-title').textContent = publishedView ? 'Where we looked' : data ? `Source coverage: ${data.candidates.length} collected leads` : 'Search sources: 5 saved listing snapshots';
       document.getElementById('source-description').textContent = publishedView ? 'Details come from listings, property websites and maps. Open a place for its sources.' : data ? 'Saved research can include indexed claims and direct checks; see each listing and source for evidence and limits. This is not a live search; availability can change.' : 'No live sources are connected in this mockup.';
       const list = document.getElementById('source-list');
@@ -448,8 +455,7 @@
       for (const entry of coverage) {
         const li = document.createElement('li');
         if (publishedView) {
-          const label = {verified:'A trip price was checked.',leads_only:'Listings found; prices not checked.',not_authorized:'No new price check.',not_searched:'Not checked in this update.',blocked:'Could not check.',failed:'Check failed.',partial:'Some details checked.'}[entry.status] || 'See research notes.';
-          li.innerHTML = `<strong>${escapeHtml(providerLabels[entry.provider] || entry.provider)}:</strong> ${escapeHtml(label)}<details><summary>Research notes</summary><p>${escapeHtml(entry.details)}</p></details>`;
+          li.innerHTML = sourceCoverageHtml(entry);
         } else li.textContent = `${providerLabels[entry.provider] || entry.provider}: ${entry.status ? entry.status.replaceAll('_',' ') + '. ' : ''}${entry.details}`;
         list.append(li);
       }
