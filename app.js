@@ -166,6 +166,25 @@
       storageError.hidden = false;
       storageError.textContent = message;
     }
+    function initializeExternalSearch() {
+      const panel = document.querySelector('.external-search');
+      if (!panel) return;
+      const key = 'port-angeles-stays-furnished-finder-dismissed-v1';
+      let dismissed = false;
+      try { dismissed = localStorage.getItem(key) === '1'; }
+      catch (error) { showStorageError('Your browser could not load the hidden-suggestion preference. The Furnished Finder suggestion is shown.'); }
+      const setHidden = hidden => {
+        panel.hidden = hidden;
+        panel.closest('header').classList.toggle('has-external-search', !hidden);
+      };
+      setHidden(dismissed);
+      document.getElementById('dismiss-external-search').addEventListener('click', () => {
+        try { localStorage.setItem(key, '1'); }
+        catch (error) { showStorageError('Your browser could not remember this dismissal. The suggestion is hidden for this visit only.'); }
+        setHidden(true);
+        document.getElementById('area').focus();
+      });
+    }
     try {
       const stored = localStorage.getItem(storageKey);
       if (stored) {
@@ -214,8 +233,8 @@
       if (importedDataset) {
         const allowed = area === 0 ? ['downtown_port_angeles'] : area === 1 ? ['downtown_port_angeles','wider_port_angeles'] :
           area === 3 ? ['sequim'] : area === 4 ? ['joyce'] : area === 5 ? ['unknown'] : Object.keys(areaLabels);
+        if (!allowed.includes(stay.area)) return 0;
         if (stay.area === 'unknown' && area !== 5) unconfirmed = true;
-        else if (!allowed.includes(stay.area)) return 0;
         if (budget !== null) {
           const amount = wholeStayEstimate(stay);
           if (amount === null) unconfirmed = true;
@@ -518,6 +537,7 @@
       }
     }
     if (publishedView) {
+      initializeExternalSearch();
       document.getElementById('reload-data').addEventListener('click',loadPublishedDataset);
       loadPublishedDataset();
     } else {
