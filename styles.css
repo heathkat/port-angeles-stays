@@ -84,7 +84,7 @@
     .next p { font-size:15px; color:var(--muted); line-height:1.6; margin:0; max-width:660px; }
     .future { border:1px solid #bdcbbd; border-radius:20px; padding:8px 12px; font-size:14px; white-space:nowrap; }
     footer { padding:0 0 30px; font-size:14px; color:var(--muted); line-height:1.7; }
-    html[data-mode=published] .search-row { grid-template-columns:minmax(160px,260px) auto; justify-content:start; }
+    html[data-mode=published] .search-row { grid-template-columns:minmax(160px,260px); justify-content:start; }
     html[data-mode=published] #status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
     html[data-mode=published] .sources { margin-top:30px; }
     html[data-mode=published] .features { margin-top:10px; }

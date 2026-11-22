@@ -24,6 +24,7 @@ All assets use relative paths, supporting a project URL or a custom domain.
 Keep the tracked `CNAME` file when rebuilding.
 The published page shows a fixed trip, short cards and expandable source notes;
 research data, exact room identity and original observation times are unchanged.
+Filters update immediately; no separate Show places button is needed.
 When the snapshot includes a Furnished Finder search URL, a prominent header link
 opens that source directly. Its listings are not imported into this comparison.
 Visitors can hide the suggestion in their browser; the link remains in source notes.
