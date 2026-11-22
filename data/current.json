@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0",
+  "datasetId": "2027-09-15_2027-09-22_2-adults_focused_20261122T062009Z",
+  "createdAt": "2026-11-22T06:20:09.328Z",
+  "trip": {
+    "checkIn": "2027-09-15", "checkOut": "2027-09-22", "nights": 7, "adults": 2,
+    "currency": "USD", "areas": ["downtown_port_angeles", "wider_port_angeles"]
+  },
+  "coverage": [
+    {"provider": "airbnb", "areas": ["downtown_port_angeles", "wider_port_angeles"], "status": "leads_only", "details": "Focused indexed searches enriched three known rentals. Direct Airbnb automation was not attempted. Index copies are dated October/November 2026; checkedAt records this pass's review, not a supplier refresh. No fresh rental quotes or verified private laundry placement.", "checkedAt": "2026-11-22T06:20:09.328Z"},
+    {"provider": "vrbo", "areas": ["downtown_port_angeles", "wider_port_angeles"], "status": "leads_only", "details": "Two focused indexed searches for property 1639461; original description supports bedrooms, upstairs full bathroom and walking claim. Dryer/appliances in related-property carousels were ignored. No direct Vrbo access or fresh quote.", "checkedAt": "2026-11-22T06:20:09.328Z"},
+    {"provider": "booking", "areas": [], "status": "not_authorized", "details": "No direct Booking.com access or new Booking.com quote. Existing Red Lion annex-king identity retained from the baseline; independent official hotel pages and a public-address map route add property facts, not current annex-room availability.", "checkedAt": "2026-11-22T06:20:09.328Z"},
+    {"provider": "brigadoon", "areas": [], "status": "not_searched", "details": "Not searched in this focused six-property pass; broader pilot remains a separate saved snapshot.", "checkedAt": null},
+    {"provider": "olympic_coast_retreats", "areas": [], "status": "not_searched", "details": "Not searched in this focused six-property pass; broader pilot remains a separate saved snapshot.", "checkedAt": null},
+    {"provider": "port_angeles_inn", "areas": ["downtown_port_angeles"], "status": "verified", "details": "Official hotel booking link redirected to LetsBook. One exact room-only quote observed twice for September 15-22, 2027, two adults, with listed taxes/fees included. No room selection, reservation, payment or contact. This does not establish bulk/API, unattended collection or redistribution permission.", "checkedAt": "2026-11-22T06:17:15.785Z"}
+  ],
+  "candidates": [
+    {
+      "id": "airbnb:1410974955818702817:harbor-view-apartment",
+      "name": "Harbor View Hideaway", "provider": "airbnb",
+      "url": "https://www.airbnb.com/rooms/1410974955818702817",
+      "unit": "Harbor View Hideaway apartment", "area": "downtown_port_angeles", "type": "unknown",
+      "amenities": {
+        "kitchen": "full", "washer": {"state": "yes", "location": "unknown"},
+        "dryer": {"state": "yes", "location": "unknown"}, "parking": "free", "bedrooms": 1, "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown", "basis": "location_only", "walkingMinutes": null, "origin": null, "destination": null,
+        "description": "Listing places the apartment above Foghorn Olive Oil Co., across from Field Arts Hall, in downtown Port Angeles. Rental entrance and an exact apartment-to-shop route remain unverified."
+      },
+      "quote": {"status": "not_verified", "amount": null, "currency": null, "basis": "unknown", "checkIn": null, "checkOut": null, "adults": null, "unit": null, "checkedAt": null, "availability": "unknown", "totalStatus": "unknown", "exclusions": []},
+      "evidence": [
+        {"fields": ["listing", "unit", "area", "walking"], "url": "https://www.airbnb.com/rooms/1410974955818702817", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Indexed original description places this apartment above Foghorn Olive Oil Co., across from Field Arts Hall and two blocks from the ferry. It sleeps four. Entire-versus-shared designation was not exposed. Index crawled 2026-10-14; no current page or exact rental-origin check."},
+        {"fields": ["kitchen", "washer", "dryer", "bedrooms", "parking"], "url": "https://www.airbnb.com/rooms/1410974955818702817", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Indexed text explicitly says full kitchen with washer and dryer, one king bedroom and a living-room sofa bed; primary amenity list says free parking on premises. Exclusive/in-unit laundry use was not independently established. Index crawled 2026-10-14."},
+        {"fields": ["walking"], "url": "https://www.foghornoliveoil.com/contact/", "method": "listing_page", "scope": "property", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Official shop contact page gives 219 N Oak Street. A public shop-address map route was explored, but is not used as an apartment walking time because the rental's exact entrance/origin is unverified."}
+      ],
+      "tradeoffs": [
+        "Strong downtown-location lead with an indexed full kitchen, king bed and both laundry machines.",
+        "Above-store access: stairs/elevator, exclusive accommodation scope and private laundry use still need substantiation.",
+        "No fresh price or September availability; older mockup quotes are not imported."
+      ]
+    },
+    {
+      "id": "airbnb:1056920:entire-cottage",
+      "name": "Cute & Cozy Mullan Cottage", "provider": "airbnb",
+      "url": "https://www.airbnb.com/rooms/1056920",
+      "unit": "Entire cottage", "area": "wider_port_angeles", "type": "entire_rental",
+      "amenities": {
+        "kitchen": "full", "washer": {"state": "yes", "location": "unknown"},
+        "dryer": {"state": "yes", "location": "unknown"}, "parking": "unknown", "bedrooms": 2, "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown", "basis": "listing_claim", "walkingMinutes": null, "origin": null, "destination": null,
+        "description": "Residential Port Angeles. The listing claims easy walks to a general store, pharmacy, several restaurants and YMCA; this is not a checked downtown-shop route."
+      },
+      "quote": {"status": "not_verified", "amount": null, "currency": null, "basis": "unknown", "checkIn": null, "checkOut": null, "adults": null, "unit": null, "checkedAt": null, "availability": "unknown", "totalStatus": "unknown", "exclusions": []},
+      "evidence": [
+        {"fields": ["listing", "unit", "area", "bedrooms", "walking"], "url": "https://www.airbnb.com/rooms/1056920", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Indexed listing explicitly identifies an entire two-bedroom cottage, four guests, one double/full bed and two single/twin beds. Walk claim concerns a general store, pharmacy, restaurants and YMCA in a quiet residential neighborhood. Index crawled 2026-11-13."},
+        {"fields": ["kitchen", "washer", "dryer"], "url": "https://www.airbnb.com/rooms/1056920", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Original indexed description explicitly lists a full-sized stove/oven, refrigerator, cookware and microwave, plus a front-loading washer and dryer included with the stay. Machine location/private use is not explicit. Index crawled 2026-11-13."}
+      ],
+      "tradeoffs": [
+        "A cooking kitchen and both laundry machines are listed.",
+        "The couple's shared bed is a double/full, not a queen or king.",
+        "Downtown walking route, stairs, laundry placement and exact-trip price remain unverified."
+      ]
+    },
+    {
+      "id": "craftsman", "name": "Walkable Craftsman", "provider": "vrbo",
+      "url": "https://www.vrbo.com/1639461",
+      "unit": "Three-bedroom Craftsman house", "area": "wider_port_angeles", "type": "entire_rental",
+      "amenities": {
+        "kitchen": "unknown", "washer": {"state": "yes", "location": "unknown"},
+        "dryer": {"state": "unknown", "location": "unknown"}, "parking": "unknown", "bedrooms": 3, "stairs": "yes"
+      },
+      "proximity": {
+        "walkable": "unknown", "basis": "listing_claim", "walkingMinutes": null, "origin": null, "destination": null,
+        "description": "The primary listing claims walking distance to downtown shopping, food and ferry, and over a dozen restaurants/pubs/breweries. Exact rental origin, route and hills were not checked."
+      },
+      "quote": {"status": "not_verified", "amount": null, "currency": null, "basis": "unknown", "checkIn": null, "checkOut": null, "adults": null, "unit": null, "checkedAt": null, "availability": "unknown", "totalStatus": "unknown", "exclusions": []},
+      "evidence": [
+        {"fields": ["listing", "unit", "area", "bedrooms", "stairs", "walking", "washer"], "url": "https://www.vrbo.com/1639461", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Original indexed property text: three bedrooms/1.5 baths; downstairs king with half bath, upstairs queen and twin bedrooms, shared full bathroom upstairs; private backyard parking, cookware and laundry. Primary amenity excerpt lists washer. Walking-to-downtown claim is marketing, not route verification. Index crawled 2026-11-21."}
+      ],
+      "tradeoffs": [
+        "King bedroom and a half bath downstairs, but the full bathroom is upstairs.",
+        "Private backyard parking is listed; parking charges are not established.",
+        "Cookware/laundry mentions do not substantiate full cooking appliances or a dryer; related-property carousel amenities were ignored.",
+        "Legacy mockup ID retained for this same Vrbo property; no old prices or availability carried forward."
+      ]
+    },
+    {
+      "id": "cozy", "name": "Cozy and Clean Holiday Stay - Unit B", "provider": "airbnb",
+      "url": "https://www.airbnb.com/rooms/678963932115610325",
+      "unit": "Entire home - Unit B", "area": "wider_port_angeles", "type": "entire_rental",
+      "amenities": {
+        "kitchen": "full", "washer": {"state": "yes", "location": "unknown"},
+        "dryer": {"state": "yes", "location": "unknown"}, "parking": "free", "bedrooms": null, "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown", "basis": "listing_claim", "walkingMinutes": null, "origin": null, "destination": null,
+        "description": "Current indexed summary describes downtown Port Angeles and the ferry as a short drive away. An earlier walking review does not establish a comfortable shop-to-home route."
+      },
+      "quote": {"status": "not_verified", "amount": null, "currency": null, "basis": "unknown", "checkIn": null, "checkOut": null, "adults": null, "unit": null, "checkedAt": null, "availability": "unknown", "totalStatus": "unknown", "exclusions": []},
+      "evidence": [
+        {"fields": ["listing", "unit", "area", "kitchen", "washer", "dryer", "parking", "walking"], "url": "https://www.airbnb.com/rooms/678963932115610325", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Indexed source explicitly labels entire home, four guests; full kitchen with dishwasher, washer and dryer, backyard fire pit and free street parking. Downtown and ferry described as a short drive. Exact bedrooms/beds, machine placement and stairs not exposed. Index crawled 2026-11-21."}
+      ],
+      "tradeoffs": [
+        "A full kitchen and both laundry machines are listed; private placement is still unconfirmed.",
+        "Treat as a driving/route-check alternative, not a substantiated downtown walking option.",
+        "Free street parking is listed, not a reserved off-street space.",
+        "Legacy mockup ID retained for this same Airbnb unit; no old price, bedroom assumptions or cancellation policy imported."
+      ]
+    },
+    {
+      "id": "booking:us:red-lion-port-angeles:annex-king",
+      "name": "Red Lion Hotel Port Angeles Harbor", "provider": "booking",
+      "url": "https://www.booking.com/hotel/us/red-lion-port-angeles.html",
+      "unit": "King Room - Annex", "area": "downtown_port_angeles", "type": "hotel",
+      "amenities": {
+        "kitchen": "unknown", "washer": {"state": "unknown", "location": "unknown"},
+        "dryer": {"state": "unknown", "location": "unknown"}, "parking": "unknown", "bedrooms": null, "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "yes", "basis": "verified_route", "walkingMinutes": 7,
+        "origin": "221 N Lincoln Street, Port Angeles, WA",
+        "destination": "104 E 1st Street, Port Angeles, WA (downtown shopping reference)",
+        "description": "Google Maps walking estimate: 7 minutes / 0.3 mile via E 1st Street from the public hotel address to the shopping reference. Maps labels routes mostly flat; room-to-street access and step-free suitability are not established."
+      },
+      "quote": {"status": "not_verified", "amount": null, "currency": null, "basis": "unknown", "checkIn": null, "checkOut": null, "adults": null, "unit": null, "checkedAt": null, "availability": "unknown", "totalStatus": "unknown", "exclusions": []},
+      "evidence": [
+        {"fields": ["listing", "unit"], "url": "https://www.booking.com/hotel/us/red-lion-port-angeles.html", "method": "search_result", "scope": "unit", "checkedAt": "2026-11-22T05:35:24Z", "note": "Baseline indexed room list identifies King Room - Annex with one king bed. Retained identity, not a new Booking.com page or availability check. No historical price imported."},
+        {"fields": ["listing", "area"], "url": "https://www.sonesta.com/hotels/waange-red-lion-hotel-port-angeles-harbor", "method": "listing_page", "scope": "property", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Official brand page identifies Red Lion Hotel Port Angeles Harbor at 221 N Lincoln Street. Hotel-local site uses Port Angeles Harbor Hotel branding for the same address. Amenities/availability of the specifically named Booking.com annex room were not confirmed."},
+        {"fields": ["listing"], "url": "https://www.portangelesharborhotel.com/rooms", "method": "listing_page", "scope": "property", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Official room page says all rooms feature fridge, microwave and coffee maker; lists king/queen, exterior-entry and accessible choices. No cooking kitchen or self-service washer/dryer established, and no mapping to the Booking.com annex-king label. These property observations are not a room quote."},
+        {"fields": ["walking"], "url": "https://www.google.com/maps/dir/?api=1&origin=221%20N%20Lincoln%20St%2C%20Port%20Angeles%2C%20WA&destination=104%20E%20First%20St%2C%20Port%20Angeles%2C%20WA&travelmode=walking", "method": "route_tool", "scope": "route", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Observed Google Maps walking mode: 7 minutes, 0.3 mile via E 1st Street; alternatives also 7 minutes. All routes labeled mostly flat. Public hotel address to 104 E 1st Street only, not an annex-room door or accessibility assessment."}
+      ],
+      "tradeoffs": [
+        "A checked short, mostly-flat public-address walk makes this a useful hotel alternative.",
+        "Official room page lists microwave/fridge/coffee maker, not a full cooking kitchen; guest washer/dryer unconfirmed.",
+        "Specific annex-room view, access and availability remain unverified; official room names do not directly match the Booking.com label.",
+        "No new Booking.com price; earlier quotes remain separate historical observations."
+      ]
+    },
+    {
+      "id": "port_angeles_inn:portangelesinn:1190700000000000007",
+      "name": "Port Angeles Inn - Queen / non-harbor view (direct)", "provider": "port_angeles_inn",
+      "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0",
+      "unit": "1 Queen Size Bed NON Harbor View / Room only", "area": "downtown_port_angeles", "type": "hotel",
+      "amenities": {
+        "kitchen": "unknown", "washer": {"state": "unknown", "location": "unknown"},
+        "dryer": {"state": "unknown", "location": "unknown"}, "parking": "unknown", "bedrooms": null, "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "yes", "basis": "verified_route", "walkingMinutes": 3,
+        "origin": "111 E 2nd Street, Port Angeles, WA",
+        "destination": "104 E 1st Street, Port Angeles, WA (downtown shopping reference)",
+        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route."
+      },
+      "quote": {
+        "status": "dated_quote", "amount": 1807.67, "currency": "USD", "basis": "whole_stay",
+        "checkIn": "2027-09-15", "checkOut": "2027-09-22", "adults": 2,
+        "unit": "1 Queen Size Bed NON Harbor View / Room only",
+        "checkedAt": "2026-11-22T06:17:15.785Z", "availability": "available", "totalStatus": "complete", "exclusions": []
+      },
+      "evidence": [
+        {"fields": ["listing", "area"], "url": "https://www.portangelesinn.com/conact-us.html", "method": "listing_page", "scope": "property", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Official hotel contact page gives 111 East 2nd Street. Official homepage links to live.ipms247.com/booking/book-rooms-portangelesinn, which publicly redirected to LetsBook. Direct booking source, not a Booking.com quote."},
+        {"fields": ["listing", "walking"], "url": "https://www.portangelesinn.com/", "method": "listing_page", "scope": "property", "checkedAt": "2026-11-22T06:20:09.328Z", "note": "Official hotel says downtown access uses steps at the NW corner, the property is on a hill, and an elevator serves above-ground rooms. All rooms have microwave/fridge/coffee maker; no A/C. No full cooking kitchen or self-service washer/dryer established."},
+        {"fields": ["listing", "unit", "quote", "availability"], "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0", "method": "browser", "scope": "unit", "checkedAt": "2026-11-22T06:17:15.785Z", "note": "After reload: available-room card for 1 Queen Size Bed NON Harbor View, Room only, 2 adults; seven-night USD 1,630.00 plus 177.67 taxes/fees, displayed total 1,807.67 incl. taxes/fees. Date picker previously showed Sep 15/22, 2027. Free cancellation before Sep 13, 2027. No room selected."},
+        {"fields": ["unit", "quote", "availability"], "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0", "method": "browser", "scope": "unit", "checkedAt": "2026-11-22T06:16:21.988Z", "note": "First observation showed the same room/rate and 1,807.67 USD included-charge total. Open date dialog explicitly showed Wed Sep 15, 2027 to Wed Sep 22, 2027, seven nights. Public room heading ID room-type-title-1190700000000000007 was unchanged after reload; ID is used for the new direct-source candidate."},
+        {"fields": ["walking"], "url": "https://www.google.com/maps/dir/?api=1&origin=111%20E%202nd%20St%2C%20Port%20Angeles%2C%20WA&destination=104%20E%20First%20St%2C%20Port%20Angeles%2C%20WA&travelmode=walking", "method": "route_tool", "scope": "route", "checkedAt": "2026-11-22T06:19:36.148Z", "note": "Observed walking mode: 3 minutes, 0.1 mile via S Laurel Street; elevation profile shows 3 feet ascent and 59 feet descent toward town. Addresses identifiable. This is not a room-door or step-free-route check."}
+      ],
+      "tradeoffs": [
+        "Fresh direct-booking room-only quote: USD 1,807.67 for seven nights, including the displayed taxes and fees; observed twice, not a price hold.",
+        "Non-harbor-view queen room for two adults. Listed free cancellation before September 13, 2027; exact cutoff time and later penalties were not captured.",
+        "Short but hilly/steps-based downtown access; elevator serves rooms, not necessarily the walk into town.",
+        "Only microwave/fridge/coffee maker established; full cooking kitchen, guest washer/dryer and room-specific step-free access remain unconfirmed. Hotel says no A/C.",
+        "New direct-source room ID; not merged with an unresolved Booking.com room or its saved choices. Recheck final checkout and availability before reserving."
+      ]
+    }
+  ]
+}
