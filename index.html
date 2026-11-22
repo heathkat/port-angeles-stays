@@ -3,45 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Port Angeles Stay Finder</title>
+  <title>Places to stay in Port Angeles</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="demo" id="demo">Saved research, not live availability. Always confirm prices and availability with the provider.</div>
+  <div class="demo" id="demo">Prices and availability can change. Confirm with the property before booking.</div>
   <div class="wrap">
     <header>
-      <h1 id="title">Port Angeles Stay Finder</h1>
-      <p class="intro">Compare hotels and rentals for your September visit.</p>
+      <h1 id="title">Places to stay in Port Angeles</h1>
+      <p class="intro" id="trip-summary">Loading trip details...</p>
     </header>
     <main aria-labelledby="title">
-      <button class="save" id="reload-data" type="button" hidden>Retry loading research</button>
-      <p id="dataset-note" class="dataset-note">Loading published research. Personal favorites and notes stay in this browser.</p>
+      <button class="save" id="reload-data" type="button" hidden>Try again</button>
+      <p id="dataset-note" class="dataset-note">Loading places...</p>
       <p id="dataset-error" class="status error" role="alert" hidden></p>
       <form class="search" id="search">
         <div class="search-row">
-          <label class="field">Search area<select id="area"><option value="0">Downtown</option><option value="1">Wider Port Angeles</option><option value="2">Nearby communities too</option><option value="3" data-import-only disabled hidden>Sequim only</option><option value="4" data-import-only disabled hidden>Joyce only</option><option value="5" data-import-only disabled hidden>Unconfirmed area</option></select></label>
+          <label class="field">Area<select id="area"><option value="0">Downtown only</option><option value="1">All Port Angeles</option><option value="2">Nearby towns too</option><option value="3" data-import-only disabled hidden>Sequim only</option><option value="4" data-import-only disabled hidden>Joyce only</option><option value="5" data-import-only disabled hidden>Unconfirmed area</option></select></label>
+          <div hidden>
           <label class="field">Check in<input id="check-in" type="date" value="2027-09-15" required></label>
           <label class="field">Check out<input id="check-out" type="date" value="2027-09-22" required></label>
           <label class="field">Guests<select id="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
-          <button class="primary" type="submit">Filter saved stays</button>
+          </div>
+          <button class="primary" type="submit">Show places</button>
         </div>
         <div class="budget-row">
-          <label class="field">Maximum for the whole stay (USD)<input id="budget" type="number" min="0" step="0.01" placeholder="No maximum" aria-describedby="budget-help"></label>
-          <p class="budget-help" id="budget-help">Compare complete dated whole-stay USD totals only. Unpriced stays are not verified budget matches.</p>
+          <label class="field">Maximum for 7 nights (USD)<input id="budget" type="number" min="0" step="0.01" placeholder="No maximum" aria-describedby="budget-help"></label>
+          <p class="budget-help" id="budget-help">For the whole trip. Places without a checked total may not fit.</p>
         </div>
         <div class="preferences">
           <label><input id="kitchen" type="checkbox"> <span id="kitchen-label">Full kitchen only</span></label>
           <label><input id="laundry" type="checkbox"> <span id="laundry-label">Washer &amp; dryer listed</span></label>
-          <label id="unknown-control" hidden><input id="show-unknown" type="checkbox" checked> Include unconfirmed filter details</label>
-          <span class="hint">Hotels stay in the mix unless you filter them out.</span>
+          <label id="unknown-control" hidden><input id="show-unknown" type="checkbox" checked> Include places with missing details</label>
+          
         </div>
       </form>
-      <details class="sources">
-        <summary id="source-title">Research source coverage</summary>
-        <p id="source-description">Sources and their limitations will appear when research loads.</p>
-        <ul id="source-list"></ul>
-      </details>
-      <p id="status" class="status" role="status">Loading published research...</p>
+
+      <p id="status" class="status" role="status">Loading places...</p>
       <p id="storage-error" class="status error" role="alert" hidden></p>
       <p id="criteria-error" class="status error" role="alert" hidden></p>
       <p id="area-note"></p>
@@ -51,22 +49,24 @@
           <div class="result-controls">
             <div class="tabs" aria-label="Show stays">
               <button class="tab" type="button" data-view="all" aria-pressed="true">All stays</button>
-              <button class="tab" type="button" data-view="saved" aria-pressed="false" aria-describedby="save-scope">Saved here <span id="saved-count">0</span></button>
+              <button class="tab" type="button" data-view="saved" aria-pressed="false" aria-describedby="save-scope">Saved <span id="saved-count">0</span></button>
               <button class="tab" type="button" data-view="rejected" aria-pressed="false">Not for us</button>
             </div>
             <label class="field sort-field">Sort by<select id="sort" aria-describedby="sort-note"><option value="downtown">Downtown first</option><option value="price-asc">Price: lowest first</option><option value="price-desc">Price: highest first</option></select></label>
           </div>
         </div>
-        <p class="save-scope" id="save-scope">Favorites and notes stay in this browser only. They are not shared or synced to another device.</p>
+        <p class="save-scope" id="save-scope">Saved places and notes stay in this browser.</p>
         <p id="sort-note" role="status"></p>
         <div class="grid" id="cards"></div>
       </section>
-      <aside class="next">
-        <div><h3>A snapshot to help you choose.</h3><p>Reviewed research updates appear here after publication. No daily worker is running. Always check the provider for the final price, availability and terms.</p></div>
-        <span class="future">Research snapshots</span>
-      </aside>
+
+      <details class="sources">
+        <summary id="source-title">Where we looked</summary>
+        <p id="source-description">Listing and price sources appear here.</p>
+        <ul id="source-list"></ul>
+      </details>
     </main>
-    <footer>Independent stay comparison, not a booking service or live search. Illustrations are not listing photos. Prices and availability must be checked with the provider.</footer>
+    <footer>Independent lodging comparison. Book on the listing site.</footer>
   </div>
   <script src="app.js" defer></script>
 </body>

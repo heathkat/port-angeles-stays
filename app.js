@@ -9,6 +9,76 @@
     const areaLabels = { downtown_port_angeles:'Downtown Port Angeles', wider_port_angeles:'Wider Port Angeles', sequim:'Sequim', joyce:'Joyce', unknown:'Area unconfirmed' };
     const providerLabels = { airbnb:'Airbnb', vrbo:'Vrbo', booking:'Booking.com', brigadoon:'Brigadoon', olympic_coast_retreats:'Olympic Coast Retreats', port_angeles_inn:'Port Angeles Inn (direct)' };
     const escapeHtml = value => String(value).replace(/[&<>"']/g,character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+    const checkedDateFormat = new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
+    const tripDateFormat = new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'});
+    const displayDate = value => checkedDateFormat.format(new Date(value));
+    function tripSummary(trip) {
+      return `${tripDateFormat.formatRange(new Date(trip.checkIn),new Date(trip.checkOut))} \u00b7 ${trip.nights} nights \u00b7 ${trip.adults} ${trip.adults === 1 ? 'adult' : 'adults'}`;
+    }
+    function publishedCardHtml(stay,item,link,noteUnsaved,uncertain) {
+      const kitchen = {full:'Full kitchen listed',kitchenette:'Kitchenette listed',none:'No kitchen',unknown:'Kitchen: not confirmed'}[stay.amenities.kitchen];
+      const washer = stay.amenities.washer, dryer = stay.amenities.dryer;
+      const machineText = (name,machine) => machine.state === 'unknown' ? `${name}: not confirmed` : machine.state === 'no' ? `No ${name.toLowerCase()}` :
+        `${name} listed${{in_unit:' in unit',shared:' (shared)',off_site:' (off site)',unknown:''}[machine.location]}`;
+      const laundry = washer.state === 'yes' && dryer.state === 'yes'
+        ? washer.location === dryer.location && washer.location !== 'unknown'
+          ? {in_unit:'Washer & dryer in unit',shared:'Shared washer & dryer',off_site:'Washer & dryer off site'}[washer.location]
+          : [washer,dryer].some(machine => ['shared','off_site'].includes(machine.location)) ? `${machineText('Washer',washer)}; ${machineText('dryer',dryer)}`
+            : 'Washer & dryer listed; private use not confirmed'
+        : washer.state === 'unknown' && dryer.state === 'unknown' ? 'Laundry: not confirmed'
+          : `${machineText('Washer',washer)}; ${machineText('dryer',dryer)}`;
+      const route = stay.proximity;
+      const mappedWalk = route.basis === 'verified_route' && route.walkingMinutes !== null;
+      const location = mappedWalk ? `About ${route.walkingMinutes} minutes to ${route.destination.includes('(downtown shopping reference)') ? 'downtown shops' : route.destination} (map estimate)`
+        : route.description.includes('across from Field Arts Hall') ? 'Downtown, across from Field Arts Hall'
+          : route.description.includes('short drive') ? 'A short drive to downtown, per listing'
+            : `${areaLabels[stay.area]} \u00b7 Walk to downtown not checked`;
+      let access = stay.amenities.stairs === 'yes' ? 'Stairs listed; ask about access.' : stay.amenities.stairs === 'unknown' ? 'Ask about stairs and access.' : '';
+      if (stay.tradeoffs.some(note => note.includes('full bathroom is upstairs'))) access = 'Full bathroom upstairs.';
+      if (route.description.includes('return involves climbing')) access = 'Uphill return; the downtown shortcut uses steps.';
+      if (stay.tradeoffs.some(note => note.includes('double/full, not a queen or king'))) access += ' Main bed: double/full, not queen or king.';
+      if (stay.tradeoffs.some(note => note.includes('Hotel says no A/C'))) access += ' No air conditioning.';
+      const name = stay.name.replace(/ - Queen \/ non-harbor view \(direct\)$/,'');
+      const unit = stay.type === 'hotel' ? (stay.unit || 'Room not confirmed').replace('1 Queen Size Bed NON Harbor View / Room only','Queen room \u00b7 No harbor view')
+        : `${{entire_rental:'Entire place',private_room:'Private room',unknown:'Entire or shared: not confirmed'}[stay.type]}${stay.amenities.bedrooms === null ? '' : ` \u00b7 ${stay.amenities.bedrooms} ${stay.amenities.bedrooms === 1 ? 'bedroom' : 'bedrooms'}`}`;
+      const quote = stay.quote;
+      const hasPrice = quoteMatches && quote.amount !== null;
+      const amount = hasPrice ? quote.currency === 'USD' ? money.format(quote.amount) : `${quote.currency || 'Currency not confirmed'} ${quote.amount.toLocaleString('en-US')}` : 'Check price';
+      const basis = hasPrice ? quote.basis === 'whole_stay' ? `for ${importedDataset.trip.nights} nights` : quote.basis === 'nightly' ? 'per night, not a trip total' : 'total not confirmed' : '';
+      const priceNotes = [];
+      if (hasPrice) {
+        if (quote.status === 'historical_quote') priceNotes.push('Previous price, not a current quote.');
+        if (quote.status === 'advertised_rate') priceNotes.push('Advertised rate, not checked for this trip.');
+        priceNotes.push(quote.totalStatus === 'complete' ? 'Includes listed taxes and fees.' : quote.totalStatus === 'incomplete' ? 'Extra charges apply.' : 'Taxes and fees not confirmed.');
+        if (quote.checkedAt) priceNotes.push(`Checked ${displayDate(quote.checkedAt)}.`);
+      }
+      if (!quoteMatches) priceNotes.push('Not checked for these dates or guests.');
+      if (quoteMatches && quote.availability === 'request_to_book') priceNotes.push('Host approval required.');
+      if (quoteMatches && quote.availability === 'unavailable') priceNotes.push('Unavailable when checked.');
+      if (hasPrice && quote.availability === 'unknown') priceNotes.push('Availability not confirmed.');
+      const sourceLabel = evidence => ({search_result:'Listing search result',route_tool:'Map route',listing_page:evidence.scope === 'property' ? 'Property website' : 'Listing page',browser:'Booking page',api:'Source details',user_supplied:'Provided details'}[evidence.method] || 'Source details');
+      return `<div class="body">
+        <div class="provider">${escapeHtml(stay.provider.replace(' (direct)',''))}</div>
+        <h3>${escapeHtml(name)}</h3><p class="description">${escapeHtml(unit)}</p>
+        <p class="travel">${escapeHtml(location)}</p>
+        <div class="features"><span class="feature ${stay.kitchen ? '' : 'partial'}">${escapeHtml(kitchen)}</span><span class="feature ${stay.laundry ? '' : 'partial'}">${escapeHtml(laundry)}</span></div>
+        ${access ? `<p class="caution"><strong>Worth knowing:</strong> ${escapeHtml(access)}</p>` : ''}
+        <div class="price"><span class="amount">${escapeHtml(amount)}</span> <small>${escapeHtml(basis)}</small>${priceNotes.length ? `<p class="price-note">${escapeHtml(priceNotes.join(' '))}</p>` : ''}</div>
+        ${uncertain ? '<p class="budget-fit">Some details still need checking against your filters.</p>' : ''}
+        <div class="actions">${link ? `<a class="listing" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer" aria-label="View ${escapeHtml(stay.name)} on ${escapeHtml(stay.provider)}">View on ${escapeHtml(stay.provider.replace(' (direct)',''))}</a>` : '<span class="listing" aria-disabled="true">Check trip dates</span>'}<button class="save" aria-pressed="${item.saved}" aria-label="${item.saved ? 'Unsave' : 'Save'} ${escapeHtml(stay.name)}">${item.saved ? 'Saved' : 'Save'}</button></div>
+        <div class="secondary"><button class="text-button reject">${item.rejected ? 'Restore' : 'Not for us'}</button></div>
+        <details class="listing-details"><summary>More details</summary>
+          <p><strong>Room or unit:</strong> ${escapeHtml(stay.unit || 'Not confirmed')}</p>
+          <p><strong>Location:</strong> ${escapeHtml(stay.location)}</p>
+          ${mappedWalk ? `<p>Walk measured from ${escapeHtml(route.origin)} to ${escapeHtml(route.destination)}, not from the room door. Step-free access is not confirmed.</p>` : ''}
+          ${stay.tradeoffs.map(note => `<p>${escapeHtml(note)}</p>`).join('')}
+          <p>${escapeHtml(quote.exclusions.length ? 'Extra charges: ' + quote.exclusions.join('; ') : quote.totalStatus === 'complete' ? 'The checked total includes the displayed taxes and fees.' : 'All taxes and fees have not been confirmed.')}</p>
+          <p>Availability ${quoteMatches ? {available:'was checked with the price',request_to_book:'requires host approval',unavailable:'was unavailable when checked',unknown:'has not been confirmed'}[quote.availability] : 'has not been checked for your changed trip'}.</p>
+          <h4>Sources</h4>${stay.evidence.map(evidence => `<p class="evidence-note"><a href="${escapeHtml(evidence.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceLabel(evidence))}</a>${evidence.checkedAt ? ' \u00b7 Reviewed ' + escapeHtml(displayDate(evidence.checkedAt)) : ''}<br>${escapeHtml(evidence.note)}</p>`).join('')}
+        </details>
+        <details class="notes"><summary>Notes${noteUnsaved ? ' (not saved)' : ''}</summary><label>Your thoughts<textarea aria-label="Notes for ${escapeHtml(stay.name)}" placeholder="Love the location. Ask about stairs."></textarea></label><p class="note-state" role="status">${noteUnsaved ? 'Not saved. Kept for this visit only.' : 'Saved automatically.'}</p></details>
+      </div>`;
+    }
     function adaptDataset(data) {
       const fail = message => { throw new Error(message); };
       const object = value => value && typeof value === 'object' && !Array.isArray(value);
@@ -173,6 +243,8 @@
           : importedDataset
             ? 'Budget matches require complete dated USD totals. Unpriced stays are unconfirmed, not free or within budget. No taxes are invented.'
             : 'Budget for all 7 nights, not per night. Hotel comparisons include the listed 10.9% tax estimate. Rental totals remain unverified; possible matches are not guaranteed to fit.';
+      if (publishedView) document.getElementById('budget-help').textContent = !budgetInput.checkValidity() ? 'Enter a valid amount, with up to two decimal places.'
+        : !quoteMatches ? 'Prices are not checked for this trip.' : 'For the whole trip. Places without a checked total may not fit.';
       document.getElementById('area-note').textContent = area === 0
         ? 'Downtown first. You choose whether to expand the area.'
         : area === 1
@@ -183,6 +255,7 @@
                 : area === 4 ? 'Joyce only. No reliably located Joyce candidate was captured in this pilot.'
                   : 'These leads cannot yet be assigned confidently to a captured area.'
             : 'Nearby communities may mean driving into downtown. This mockup has no nearby-community listings yet, so it still shows only the Port Angeles snapshots; no live search has run.';
+      if (publishedView) document.getElementById('area-note').textContent = area === 0 ? '' : area === 1 ? 'Includes downtown and other Port Angeles neighborhoods.' : 'Some places may need a drive into town.';
       const sort = document.getElementById('sort').value;
       const priceSort = sort !== 'downtown' && quoteMatches;
       document.getElementById('sort-note').textContent = sort === 'downtown'
@@ -192,6 +265,7 @@
           : importedDataset
             ? 'Only complete dated USD totals can be price-sorted. Missing, incomplete and historical prices remain unconfirmed and sort after priced stays.'
             : 'Sorted by the displayed seven-night estimates. Rental final totals remain unverified.';
+      if (publishedView) document.getElementById('sort-note').textContent = sort === 'downtown' ? '' : 'Places without a checked trip total come last.';
       const visible = stays.filter(stay => {
         const item = choice(stay.id);
         if (!filterMatch(stay,area,budget)) return false;
@@ -209,7 +283,8 @@
       document.getElementById('results-title').textContent = `${visible.length} ${visible.length === 1 ? 'place' : 'places'} ${view === 'saved' ? 'saved' : view === 'rejected' ? 'ruled out' : 'to explore'}.`;
       if (importedDataset) {
         const uncertain = visible.filter(stay => filterMatch(stay,area,budget) === 1).length;
-        document.getElementById('results-sub').textContent = `Snapshot trip: ${importedDataset.trip.checkIn} to ${importedDataset.trip.checkOut} / ${importedDataset.trip.nights} nights / ${importedDataset.trip.adults} adults. ${uncertain} shown with unconfirmed filter details.${quoteMatches ? '' : ' Changed trip: no matching quotes.'}`;
+        document.getElementById('results-sub').textContent = publishedView ? uncertain ? `${uncertain} ${uncertain === 1 ? 'place has' : 'places have'} details that still need checking.` : ''
+          : `Snapshot trip: ${importedDataset.trip.checkIn} to ${importedDataset.trip.checkOut} / ${importedDataset.trip.nights} nights / ${importedDataset.trip.adults} adults. ${uncertain} shown with unconfirmed filter details.${quoteMatches ? '' : ' Changed trip: no matching quotes.'}`;
       }
       const cards = document.getElementById('cards');
       cards.replaceChildren();
@@ -225,14 +300,17 @@
               ? importedDataset ? `No evidenced budget match in ${areaName}. Missing prices are not proof that no affordable stays exist.` : `No snapshot matches your budget and preferences in ${areaName}. Comparisons use estimates, not verified live totals.`
               : `No snapshot matches your preferences in ${areaName}.`;
         empty.append(message);
+        if (publishedView && view === 'all') message.textContent = budget !== null ? 'No confirmed matches. Other places may fit, but their prices need checking.' : 'No places match these filters.';
         if (view === 'all' && area < 2) {
           const explanation = document.createElement('p');
           explanation.textContent = 'Keep your dates, guest count, budget, kitchen, and laundry preferences. A broader area may require a drive; it does not guarantee savings.';
+          if (publishedView) explanation.textContent = 'Try a wider area, or change your filters.';
           const expand = document.createElement('button');
           expand.className = 'primary';
           expand.type = 'button';
           expand.id = 'expand-area';
           expand.textContent = area === 0 ? 'Search wider Port Angeles' : 'Include nearby communities';
+          if (publishedView) expand.textContent = area === 0 ? 'Show all Port Angeles' : 'Show nearby towns';
           expand.addEventListener('click', () => {
             document.getElementById('area').value = String(area + 1);
             status.textContent = 'Area expanded by your choice. All other preferences kept. This filters saved research, not a fresh provider search.';
@@ -243,6 +321,7 @@
         } else if (view === 'all') {
           const explanation = document.createElement('p');
           explanation.textContent = importedDataset ? 'Only the loaded dataset is being filtered. You can include unconfirmed details or choose another area; no new availability search has run.' : 'This is the widest demo area. Nearby-community results are not connected. Try changing your budget or preferences; this is not proof that no affordable stays exist.';
+          if (publishedView) explanation.textContent = 'Try changing your filters or including places with missing details.';
           empty.append(explanation);
         }
         cards.append(empty);
@@ -267,7 +346,7 @@
           ? `${areaLabels[stay.area]} / checked map estimate: ${stay.proximity.walkingMinutes} min from ${stay.proximity.origin} to ${stay.proximity.destination}; not a step-free-access check`
           : `${importedDataset ? areaLabels[stay.area] : downtownIds.has(stay.id) ? 'Downtown' : 'Wider Port Angeles'} / walking access not checked`;
         const detailHtml = importedDataset ? `<details class="listing-details"><summary>Evidence and missing details</summary><p>${escapeHtml(stay.caution || 'No additional tradeoff recorded.')}</p><p>${escapeHtml(stay.quote.exclusions.length ? 'Excluded charges: ' + stay.quote.exclusions.join('; ') : 'No excluded charges recorded; this is not proof that all fees are included.')}</p>${stay.evidence.map(item => `<p class="evidence-note"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.method.replaceAll('_',' '))} / ${escapeHtml(item.scope)}</a>: ${escapeHtml(item.note)} ${item.checkedAt ? 'Observed ' + escapeHtml(item.checkedAt) : 'Observation time unknown'}.</p>`).join('')}</details>` : `<details class="listing-details"><summary>Price &amp; stay details</summary><p>${escapeHtml(stay.priceNote)} Original quote: Sep 15-22, 2027 for 2 guests.</p><p>${escapeHtml(stay.caution)}</p></details>`;
-        article.innerHTML = `
+        article.innerHTML = publishedView ? publishedCardHtml(stay,item,link,noteUnsaved,filterMatch(stay,area,budget) === 1) : `
           <div class="visual" aria-hidden="true">
             <svg viewBox="0 0 350 142"><path d="M0 88 75 34 131 81 220 18 295 77 350 48V142H0Z" fill="#87a99a" opacity=".65"/><path d="M0 111Q160 93 350 115V142H0Z" fill="#639389"/><path d="M104 123V71H232V123Z" fill="#fcf6e8"/><path d="m92 73 77-43 77 43Z" fill="#365e52"/><path d="M119 82h24v23h-24zm39 0h24v23h-24zm40 0h20v41h-20z" fill="#a4bbb0"/><circle cx="295" cy="30" r="15" fill="#f3d99b"/></svg>
             <span class="badge">${escapeHtml(stay.badge)}</span>
@@ -340,16 +419,26 @@
       document.getElementById('kitchen-label').textContent = data ? 'Full kitchen listed' : 'Full kitchen only';
       document.getElementById('laundry-label').textContent = data ? 'In-unit washer & dryer' : 'Washer & dryer listed';
       document.getElementById('area').value = data ? '2' : '0';
+      if (publishedView) {
+        const otherAreas = stays.some(stay => !['downtown_port_angeles','wider_port_angeles'].includes(stay.area));
+        document.getElementById('area').value = otherAreas ? '2' : '1';
+        document.querySelector('#area option[value="2"]').hidden = !otherAreas;
+        document.querySelectorAll('[data-import-only]').forEach(option => {
+          const area = {3:'sequim',4:'joyce',5:'unknown'}[option.value];
+          option.hidden = option.disabled = !stays.some(stay => stay.area === area);
+        });
+        document.getElementById('trip-summary').textContent = tripSummary(data.trip);
+      }
       document.getElementById('check-in').value = data ? data.trip.checkIn : '2027-09-15';
       document.getElementById('check-out').value = data ? data.trip.checkOut : '2027-09-22';
       const guests = document.getElementById('guests');
       const adults = String(data ? data.trip.adults : 2);
       if (![...guests.options].some(option => option.value === adults)) guests.add(new Option(adults,adults));
       guests.value = adults;
-      document.getElementById('demo').textContent = publishedView ? 'Saved research, not live availability. Always confirm prices and availability with the provider.' : data ? 'Collected JSON preview / evidence-tagged snapshots / no live search or publication' : 'Clickable mockup / November 21, 2026 price snapshots. Search does not contact booking sites.';
-      document.getElementById('dataset-note').textContent = publishedView ? `${data.candidates.length} stays / research collected ${data.createdAt}. Individual evidence and price times are shown below. Publishing does not refresh source checks. Favorites and notes stay in this browser.` : data ? `Loaded ${data.candidates.length} leads from snapshot ${data.datasetId}, collected ${data.createdAt}. Data stays in this view until reload; reselect the JSON then. Favorites and notes remain separate.` : 'Local preview only. Loading a file does not publish it or contact booking sites.';
-      document.getElementById('source-title').textContent = data ? `Source coverage: ${data.candidates.length} collected leads` : 'Search sources: 5 saved listing snapshots';
-      document.getElementById('source-description').textContent = data ? 'Saved research can include indexed claims and direct checks; see each listing and source for evidence and limits. This is not a live search; availability can change.' : 'No live sources are connected in this mockup.';
+      document.getElementById('demo').textContent = publishedView ? 'Prices and availability can change. Confirm with the property before booking.' : data ? 'Collected JSON preview / evidence-tagged snapshots / no live search or publication' : 'Clickable mockup / November 21, 2026 price snapshots. Search does not contact booking sites.';
+      document.getElementById('dataset-note').textContent = publishedView ? `Research collected ${displayDate(data.createdAt)}. Listing details may be older.` : data ? `Loaded ${data.candidates.length} leads from snapshot ${data.datasetId}, collected ${data.createdAt}. Data stays in this view until reload; reselect the JSON then. Favorites and notes remain separate.` : 'Local preview only. Loading a file does not publish it or contact booking sites.';
+      document.getElementById('source-title').textContent = publishedView ? 'Where we looked' : data ? `Source coverage: ${data.candidates.length} collected leads` : 'Search sources: 5 saved listing snapshots';
+      document.getElementById('source-description').textContent = publishedView ? 'Details come from listings, property websites and maps. Open a place for its sources.' : data ? 'Saved research can include indexed claims and direct checks; see each listing and source for evidence and limits. This is not a live search; availability can change.' : 'No live sources are connected in this mockup.';
       const list = document.getElementById('source-list');
       list.replaceChildren();
       const coverage = data ? data.coverage : [
@@ -358,7 +447,10 @@
       ];
       for (const entry of coverage) {
         const li = document.createElement('li');
-        li.textContent = `${providerLabels[entry.provider] || entry.provider}: ${entry.status ? entry.status.replaceAll('_',' ') + '. ' : ''}${entry.details}`;
+        if (publishedView) {
+          const label = {verified:'A trip price was checked.',leads_only:'Listings found; prices not checked.',not_authorized:'No new price check.',not_searched:'Not checked in this update.',blocked:'Could not check.',failed:'Check failed.',partial:'Some details checked.'}[entry.status] || 'See research notes.';
+          li.innerHTML = `<strong>${escapeHtml(providerLabels[entry.provider] || entry.provider)}:</strong> ${escapeHtml(label)}<details><summary>Research notes</summary><p>${escapeHtml(entry.details)}</p></details>`;
+        } else li.textContent = `${providerLabels[entry.provider] || entry.provider}: ${entry.status ? entry.status.replaceAll('_',' ') + '. ' : ''}${entry.details}`;
         list.append(li);
       }
       updateCriteria();
@@ -398,7 +490,7 @@
       controls.forEach(control => { control.disabled = true; });
       retry.disabled = true;
       error.hidden = true;
-      status.textContent = 'Loading published research...';
+      status.textContent = 'Loading places...';
       try {
         const response = await fetch('data/current.json',{cache:'no-store'});
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -409,12 +501,12 @@
         showDataset(data,adapted);
         controls.forEach(control => { control.disabled = false; });
         retry.hidden = true;
-        status.textContent = 'Published research loaded. Filters compare captured facts only; this is not a live booking search.';
+        status.textContent = `${adapted.length} places loaded.`;
       } catch (failure) {
-        error.textContent = `Research could not be loaded: ${failure.message}. No example prices have been substituted. Retry, or return later.`;
+        error.textContent = `Places could not be loaded: ${failure.message}. Try again, or return later.`;
         error.hidden = false;
         retry.hidden = false;
-        status.textContent = 'Comparison unavailable until research loads successfully.';
+        status.textContent = 'Places are unavailable until loading succeeds.';
       } finally {
         retry.disabled = false;
       }
