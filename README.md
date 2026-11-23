@@ -25,6 +25,16 @@ Keep the tracked `CNAME` file when rebuilding.
 The published page shows a fixed trip, short cards and expandable source notes;
 research data, exact room identity and original observation times are unchanged.
 Filters update immediately; no separate Show places button is needed.
+The downtown-oriented filter includes Port Angeles listing/review walk claims,
+clearly labeled as unverified, alongside downtown-area records and checked routes.
+Location corroboration and walking evidence are separate; no walk-time cutoff is
+implied. Optional proximity.locationEvidence and proximity.downtownWalkClaim fields
+record reviewed evidence, not title/snippet guesses or new availability checks.
+Confirmed Port Angeles Inn source/room records share one comparison card.
+Expand its room options to compare individual quotes and manage each room/source's
+saved status, rejection and notes. Filtering happens per room before grouping;
+the headline uses the lowest matching complete dated USD room total, excluding
+explicitly unavailable rooms. Unpriced sources never supply a zero-cost quote.
 When the snapshot includes a Furnished Finder search URL, a prominent header link
 opens that source directly. Its listings are not imported into this comparison.
 Visitors can hide the suggestion in their browser; the link remains in source notes.

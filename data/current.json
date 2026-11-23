@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "datasetId": "2027-09-15_2027-09-22_2-adults_review_20261123T063258Z_manual",
-  "createdAt": "2026-11-23T06:36:34.546Z",
+  "datasetId": "2027-09-15_2027-09-22_2-adults_review_20261123T070003Z_location",
+  "createdAt": "2026-11-23T07:04:17.758Z",
   "trip": {
     "checkIn": "2027-09-15",
     "checkOut": "2027-09-22",
@@ -119,7 +119,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Residential Port Angeles. The listing claims easy walks to a general store, pharmacy, several restaurants and YMCA; this is not a checked downtown-shop route."
+        "description": "Residential Port Angeles. The listing claims easy walks to a general store, pharmacy, several restaurants and YMCA; this is not a checked downtown-shop route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -197,7 +199,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing places the apartment above Foghorn Olive Oil Co., across from Field Arts Hall, in downtown Port Angeles. Rental entrance and an exact apartment-to-shop route remain unverified."
+        "description": "Listing places the apartment above Foghorn Olive Oil Co., across from Field Arts Hall, in downtown Port Angeles. Rental entrance and an exact apartment-to-shop route remain unverified.",
+        "locationEvidence": "building_corroborated",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -297,7 +301,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Walk claim refers to the Fine Arts Center/restaurants, not a checked downtown-shop route."
+        "description": "Walk claim refers to the Fine Arts Center/restaurants, not a checked downtown-shop route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -364,7 +370,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -432,7 +440,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing says ten minutes from downtown Sequim; transport mode and Port Angeles proximity are unverified."
+        "description": "Listing says ten minutes from downtown Sequim; transport mode and Port Angeles proximity are unverified.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -499,7 +509,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -563,7 +575,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Directions mention Joyce General Store and Laird's Corner; exact regional assignment remains unknown."
+        "description": "Directions mention Joyce General Store and Laird's Corner; exact regional assignment remains unknown.",
+        "locationEvidence": "unknown",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -641,7 +655,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Rural five-acre property near the Olympic Adventure Trail; no downtown route checked."
+        "description": "Rural five-acre property near the Olympic Adventure Trail; no downtown route checked.",
+        "locationEvidence": "unknown",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -715,7 +731,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -780,7 +798,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Across from Olympic Discovery Trail and near downtown Sequim, not a checked Port Angeles route."
+        "description": "Across from Olympic Discovery Trail and near downtown Sequim, not a checked Port Angeles route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -845,7 +865,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Freshwater Bay/Elwha River Mouth location; no downtown route checked."
+        "description": "Freshwater Bay/Elwha River Mouth location; no downtown route checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -908,7 +930,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Official listing claims walking to town and nearby restaurants/coffee; exact route not checked."
+        "description": "Official listing claims walking to town and nearby restaurants/coffee; exact route not checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -1004,7 +1028,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Indexed address is 111 East 2nd Street in the central downtown street grid; no route checked."
+        "description": "Indexed address is 111 East 2nd Street in the central downtown street grid; no route checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1067,7 +1093,9 @@
         "walkingMinutes": 7,
         "origin": "221 N Lincoln Street, Port Angeles, WA",
         "destination": "104 E 1st Street, Port Angeles, WA (downtown shopping reference)",
-        "description": "Google Maps walking estimate: 7 minutes / 0.3 mile via E 1st Street from the public hotel address to the shopping reference. Maps labels routes mostly flat; room-to-street access and step-free suitability are not established."
+        "description": "Google Maps walking estimate: 7 minutes / 0.3 mile via E 1st Street from the public hotel address to the shopping reference. Maps labels routes mostly flat; room-to-street access and step-free suitability are not established.",
+        "locationEvidence": "address_corroborated",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1162,7 +1190,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1234,7 +1264,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1306,7 +1338,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1372,7 +1406,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "The primary listing claims walking distance to downtown shopping, food and ferry, and over a dozen restaurants/pubs/breweries. Exact rental origin, route and hills were not checked."
+        "description": "The primary listing claims walking distance to downtown shopping, food and ferry, and over a dozen restaurants/pubs/breweries. Exact rental origin, route and hills were not checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -1441,7 +1477,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Current indexed summary describes downtown Port Angeles and the ferry as a short drive away. An earlier walking review does not establish a comfortable shop-to-home route."
+        "description": "Current indexed summary describes downtown Port Angeles and the ferry as a short drive away. An earlier walking review does not establish a comfortable shop-to-home route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1511,7 +1549,9 @@
         "walkingMinutes": 3,
         "origin": "111 E 2nd Street, Port Angeles, WA",
         "destination": "104 E 1st Street, Port Angeles, WA (downtown shopping reference)",
-        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route."
+        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route.",
+        "locationEvidence": "address_corroborated",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "dated_quote",
@@ -1649,7 +1689,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing says minutes from Hollywood Beach and the National Park Visitor Center; no route checked."
+        "description": "Listing says minutes from Hollywood Beach and the National Park Visitor Center; no route checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1714,7 +1756,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1781,7 +1825,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing claims a short walk to downtown and ferry; no origin or route checked."
+        "description": "Listing claims a short walk to downtown and ferry; no origin or route checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -1848,7 +1894,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -1914,7 +1962,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing places cottage in the Front Street commercial district and claims a short walk to downtown/pier; exact route unverified."
+        "description": "Listing places cottage in the Front Street commercial district and claims a short walk to downtown/pier; exact route unverified.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -1981,7 +2031,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing claims downtown is walkable; no checked route."
+        "description": "Listing claims downtown is walkable; no checked route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -2047,7 +2099,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing describes nine blocks up from the waterfront; hills and walking route not checked."
+        "description": "Listing describes nine blocks up from the waterfront; hills and walking route not checked.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2111,7 +2165,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2173,7 +2229,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2237,7 +2295,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing places bungalow in Cherry Hill and claims walkable downtown restaurants; no checked route."
+        "description": "Listing places bungalow in Cherry Hill and claims walkable downtown restaurants; no checked route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -2307,7 +2367,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing claims walk to downtown and Blackball Ferry from Cherry Hill; no verified route/time."
+        "description": "Listing claims walk to downtown and Blackball Ferry from Cherry Hill; no verified route/time.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -2374,7 +2436,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2438,7 +2502,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2501,7 +2567,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Primary listing claims walking distance of downtown; exact route unverified."
+        "description": "Primary listing claims walking distance of downtown; exact route unverified.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -2569,7 +2637,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2636,7 +2706,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": "Listing places home in Cherry Hill and claims a walk to waterfront/downtown/ferry; no verified route."
+        "description": "Listing places home in Cherry Hill and claims a walk to waterfront/downtown/ferry; no verified route.",
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": true
       },
       "quote": {
         "status": "not_verified",
@@ -2702,7 +2774,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2769,7 +2843,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2835,7 +2911,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2902,7 +2980,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -2966,7 +3046,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -3035,7 +3117,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -3101,7 +3185,9 @@
         "walkingMinutes": null,
         "origin": null,
         "destination": null,
-        "description": null
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "not_verified",
@@ -3167,7 +3253,9 @@
         "walkingMinutes": 3,
         "origin": "111 E 2nd Street, Port Angeles, WA",
         "destination": "104 E 1st Street, Port Angeles, WA (downtown shopping reference)",
-        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route."
+        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route.",
+        "locationEvidence": "address_corroborated",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "dated_quote",
@@ -3280,7 +3368,9 @@
         "walkingMinutes": 3,
         "origin": "111 E 2nd Street, Port Angeles, WA",
         "destination": "104 E 1st Street, Port Angeles, WA (downtown shopping reference)",
-        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route."
+        "description": "Google Maps walking estimate: 3 minutes / 0.1 mile via S Laurel Street, with 59 feet descent toward the shopping reference. Hotel says its downtown shortcut uses steps; the return involves climbing. Room elevator does not establish a step-free town route.",
+        "locationEvidence": "address_corroborated",
+        "downtownWalkClaim": false
       },
       "quote": {
         "status": "dated_quote",

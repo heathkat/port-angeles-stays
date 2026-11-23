@@ -20,7 +20,65 @@
       const link = entry.url ? `<p><a href="${escapeHtml(entry.url)}" target="_blank" rel="noopener noreferrer">Browse this source directly</a></p>` : '';
       return `<strong>${escapeHtml(providerLabels[entry.provider] || entry.provider)}:</strong> ${escapeHtml(label)}${link}<details><summary>Research notes</summary><p>${escapeHtml(entry.details)}</p></details>`;
     }
-    function publishedCardHtml(stay,item,link,noteUnsaved,uncertain) {
+    function isPortAngelesInn(stay) {
+      return stay.type === 'hotel' && (stay.id.startsWith('port_angeles_inn:portangelesinn:') || stay.id === 'booking:us:port-angeles-inn:unresolved-room');
+    }
+    function comparisonGroups(candidates) {
+      const groups = new Map();
+      for (const stay of candidates) {
+        const key = isPortAngelesInn(stay) ? 'property:port-angeles-inn' : `unit:${stay.id}`;
+        if (!groups.has(key)) groups.set(key,[]);
+        groups.get(key).push(stay);
+      }
+      return [...groups.values()];
+    }
+    function comparisonPrice(group) {
+      const prices = group.filter(stay => stay.quote.availability !== 'unavailable').map(wholeStayEstimate).filter(amount => amount !== null);
+      return prices.length ? Math.min(...prices) : null;
+    }
+    function publishedLocation(stay) {
+      const evidence = {
+        address_corroborated:'Address corroborated',
+        building_corroborated:'Building reference corroborated; rental entrance not checked',
+        listing_claim:'Area described by listing; exact location not independently checked',
+        unknown:'Location not established'
+      }[stay.proximity.locationEvidence] || 'Location check not recorded';
+      return `${areaLabels[stay.area]} \u00b7 ${evidence}`;
+    }
+    function publishedWalk(stay) {
+      const route = stay.proximity, description = route.description || '';
+      return route.basis === 'verified_route' && route.walkingMinutes !== null
+        ? `Checked walking route: about ${route.walkingMinutes} minutes to ${route.destination.includes('(downtown shopping reference)') ? 'downtown shops' : route.destination} (map estimate)`
+        : route.downtownWalkClaim === true
+          ? `${route.basis === 'review_claim' ? 'Review' : 'Listing'} claims walking to downtown; route, time and hills not independently checked`
+          : description.includes('short drive') ? 'Listing describes a short drive to downtown; walk not checked'
+            : 'Walk to downtown not checked';
+    }
+    function downtownNearby(stay) {
+      return ['downtown_port_angeles','wider_port_angeles'].includes(stay.area) &&
+        (stay.area === 'downtown_port_angeles' || stay.proximity.downtownWalkClaim === true ||
+          (stay.proximity.basis === 'verified_route' && stay.proximity.walkingMinutes !== null &&
+            (stay.proximity.destination || '').includes('(downtown shopping reference)')));
+    }
+    function publishedInnHtml(group,propertyRecords) {
+      const location = propertyRecords.find(stay => stay.proximity.basis === 'verified_route') || propertyRecords[0];
+      const uphill = propertyRecords.some(stay => (stay.proximity.description || '').includes('return involves climbing'));
+      const amount = comparisonPrice(group);
+      const rooms = group.filter(stay => stay.unit !== null).length;
+      return `<div class="body">
+        <div class="provider">Hotel</div><h3>Port Angeles Inn</h3>
+        <p class="description">One hotel; compare its room choices below.</p>
+        <p class="travel">${escapeHtml(publishedLocation(location))}</p>
+        <p class="travel">${escapeHtml(publishedWalk(location))}</p>
+        <p class="caution">${uphill ? 'Uphill return; the downtown shortcut uses steps. The room elevator does not establish a step-free town route.' : 'Ask about room and town access.'}</p>
+        <div class="price"><span class="amount">${amount === null ? 'Check room prices' : 'From ' + escapeHtml(money.format(amount))}</span>${amount === null ? '' : ` <small>for ${importedDataset.trip.nights} nights</small>`}
+          <p class="price-note">${amount === null ? quoteMatches ? 'No matching checked room total in this view.' : 'Not checked for these dates or guests.' : 'Lowest matching checked room total in this view, including listed taxes and fees. See each room for its check date; availability can change.'}</p></div>
+        <details class="room-options"><summary>${rooms ? `Compare ${rooms} room ${rooms === 1 ? 'option' : 'options'}` : 'Booking source'}${rooms && group.some(stay => stay.unit === null) ? ' and additional booking source' : ''}</summary>
+          <p class="hint">Prices, amenities, saved choices and notes belong to each room or source separately.</p><div class="room-list"></div>
+        </details>
+      </div>`;
+    }
+    function publishedCardHtml(stay,item,link,noteUnsaved,uncertain,roomOption=false) {
       const kitchen = {full:'Full kitchen listed',kitchenette:'Kitchenette listed',none:'No kitchen',unknown:'Kitchen: not confirmed'}[stay.amenities.kitchen];
       const washer = stay.amenities.washer, dryer = stay.amenities.dryer;
       const machineText = (name,machine) => machine.state === 'unknown' ? `${name}: not confirmed` : machine.state === 'no' ? `No ${name.toLowerCase()}` :
@@ -35,10 +93,7 @@
       const route = stay.proximity;
       const routeDescription = route.description || '';
       const mappedWalk = route.basis === 'verified_route' && route.walkingMinutes !== null;
-      const location = mappedWalk ? `About ${route.walkingMinutes} minutes to ${route.destination.includes('(downtown shopping reference)') ? 'downtown shops' : route.destination} (map estimate)`
-        : routeDescription.includes('across from Field Arts Hall') ? 'Downtown, across from Field Arts Hall'
-          : routeDescription.includes('short drive') ? 'A short drive to downtown, per listing'
-            : `${areaLabels[stay.area]} \u00b7 Walk to downtown not checked`;
+      const location = publishedLocation(stay);
       let access = stay.amenities.stairs === 'yes' ? 'Stairs listed; ask about access.' : stay.amenities.stairs === 'unknown' ? 'Ask about stairs and access.' : '';
       if (stay.tradeoffs.some(note => note.includes('full bathroom is upstairs'))) access = 'Full bathroom upstairs.';
       if (routeDescription.includes('return involves climbing')) access = 'Uphill return; the downtown shortcut uses steps.';
@@ -65,16 +120,18 @@
       const sourceLabel = evidence => ({search_result:'Listing search result',route_tool:'Map route',listing_page:evidence.scope === 'property' ? 'Property website' : 'Listing page',browser:'Booking page',api:'Source details',user_supplied:'Provided details'}[evidence.method] || 'Source details');
       return `<div class="body">
         <div class="provider">${escapeHtml(stay.provider.replace(' (direct)',''))}</div>
-        <h3>${escapeHtml(name)}</h3><p class="description">${escapeHtml(unit)}</p>
+        ${roomOption ? `<h4 class="room-title">${escapeHtml(stay.unit || 'Additional booking source; room not confirmed')}</h4>` : `<h3>${escapeHtml(name)}</h3><p class="description">${escapeHtml(unit)}</p>
         <p class="travel">${escapeHtml(location)}</p>
+        <p class="travel">${escapeHtml(publishedWalk(stay))}</p>
         <div class="features"><span class="feature ${stay.kitchen ? '' : 'partial'}">${escapeHtml(kitchen)}</span><span class="feature ${stay.laundry ? '' : 'partial'}">${escapeHtml(laundry)}</span></div>
-        ${access ? `<p class="caution"><strong>Worth knowing:</strong> ${escapeHtml(access)}</p>` : ''}
-        <div class="price"><span class="amount">${escapeHtml(amount)}</span> <small>${escapeHtml(basis)}</small>${priceNotes.length ? `<p class="price-note">${escapeHtml(priceNotes.join(' '))}</p>` : ''}</div>
+        ${access ? `<p class="caution"><strong>Worth knowing:</strong> ${escapeHtml(access)}</p>` : ''}`}
+        ${roomOption && stay.unit === null ? '<p class="price-note">Room, trip price and availability are not confirmed on this source.</p>' : `<div class="price"><span class="amount">${escapeHtml(amount)}</span> <small>${escapeHtml(basis)}</small>${priceNotes.length ? `<p class="price-note">${escapeHtml(priceNotes.join(' '))}</p>` : ''}</div>`}
         ${uncertain ? '<p class="budget-fit">Some details still need checking against your filters.</p>' : ''}
         <div class="actions">${link ? `<a class="listing" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer" aria-label="View ${escapeHtml(stay.name)} on ${escapeHtml(stay.provider)}">View on ${escapeHtml(stay.provider.replace(' (direct)',''))}</a>` : '<span class="listing" aria-disabled="true">Check trip dates</span>'}<button class="save" aria-pressed="${item.saved}" aria-label="${item.saved ? 'Unsave' : 'Save'} ${escapeHtml(stay.name)}">${item.saved ? 'Saved' : 'Save'}</button></div>
         <div class="secondary"><button class="text-button reject">${item.rejected ? 'Restore' : 'Not for us'}</button></div>
         <details class="listing-details"><summary>More details</summary>
           <p><strong>Room or unit:</strong> ${escapeHtml(stay.unit || 'Not confirmed')}</p>
+          ${roomOption ? `<p>${escapeHtml(kitchen)}; ${escapeHtml(laundry)}.</p>` : ''}
           <p><strong>Location:</strong> ${escapeHtml(stay.location)}</p>
           ${mappedWalk ? `<p>Walk measured from ${escapeHtml(route.origin)} to ${escapeHtml(route.destination)}, not from the room door. Step-free access is not confirmed.</p>` : ''}
           ${stay.tradeoffs.map(note => `<p>${escapeHtml(note)}</p>`).join('')}
@@ -112,6 +169,8 @@
             !['free','paid','none','unknown'].includes(amenities.parking) || !states.includes(amenities.stairs) ||
             !(amenities.bedrooms === null || (Number.isInteger(amenities.bedrooms) && amenities.bedrooms >= 0)) ||
             !states.includes(proximity.walkable) || !['verified_route','listing_claim','review_claim','location_only','unknown'].includes(proximity.basis) ||
+            (proximity.locationEvidence !== undefined && !['address_corroborated','building_corroborated','listing_claim','unknown'].includes(proximity.locationEvidence)) ||
+            (proximity.downtownWalkClaim !== undefined && typeof proximity.downtownWalkClaim !== 'boolean') ||
             !(proximity.walkingMinutes === null || (typeof proximity.walkingMinutes === 'number' && Number.isFinite(proximity.walkingMinutes) && proximity.walkingMinutes >= 0)) ||
             ![proximity.origin,proximity.destination,proximity.description].every(value => value === null || text(value)) ||
             !['dated_quote','historical_quote','advertised_rate','not_verified','unavailable'].includes(quote.status) ||
@@ -228,12 +287,12 @@
       url.searchParams.set(keys[2],document.getElementById('guests').value);
       return url.href;
     }
-    function filterMatch(stay,area,budget) {
+    function filterMatch(stay,area,budget,includeNearby=false) {
       let unconfirmed = false;
       if (importedDataset) {
         const allowed = area === 0 ? ['downtown_port_angeles'] : area === 1 ? ['downtown_port_angeles','wider_port_angeles'] :
           area === 3 ? ['sequim'] : area === 4 ? ['joyce'] : area === 5 ? ['unknown'] : Object.keys(areaLabels);
-        if (!allowed.includes(stay.area)) return 0;
+        if (area === 0 && includeNearby ? !downtownNearby(stay) : !allowed.includes(stay.area)) return 0;
         if (stay.area === 'unknown' && area !== 5) unconfirmed = true;
         if (budget !== null) {
           const amount = wholeStayEstimate(stay);
@@ -281,7 +340,9 @@
                 : area === 4 ? 'Joyce only. No reliably located Joyce candidate was captured in this pilot.'
                   : 'These leads cannot yet be assigned confidently to a captured area.'
             : 'Nearby communities may mean driving into downtown. This mockup has no nearby-community listings yet, so it still shows only the Port Angeles snapshots; no live search has run.';
-      if (publishedView) document.getElementById('area-note').textContent = area === 0 ? '' : area === 1 ? 'Includes downtown and other Port Angeles neighborhoods.' : 'Some places may need a drive into town.';
+      if (publishedView) document.getElementById('area-note').textContent = area === 0
+        ? 'Includes downtown-area leads and Port Angeles listings that claim a walk to downtown. Claims are not checked routes; time, hills and exact rental locations may be unknown. No walking-time cutoff is applied.'
+        : area === 1 ? 'Includes downtown and other Port Angeles neighborhoods.' : 'Some places may need a drive into town.';
       const sort = document.getElementById('sort').value;
       const priceSort = sort !== 'downtown' && quoteMatches;
       document.getElementById('sort-note').textContent = sort === 'downtown'
@@ -294,7 +355,7 @@
       if (publishedView) document.getElementById('sort-note').textContent = sort === 'downtown' ? '' : 'Places without a checked trip total come last.';
       const visible = stays.filter(stay => {
         const item = choice(stay.id);
-        if (!filterMatch(stay,area,budget)) return false;
+        if (!filterMatch(stay,area,budget,publishedView)) return false;
         return view === 'rejected' ? item.rejected : !item.rejected && (view !== 'saved' || item.saved);
       }).sort((a,b) => {
         if (priceSort) {
@@ -305,14 +366,25 @@
         }
         return Number(downtownIds.has(b.id)) - Number(downtownIds.has(a.id));
       });
-      document.getElementById('saved-count').textContent = stays.filter(stay => choice(stay.id).saved && !choice(stay.id).rejected).length;
-      document.getElementById('results-title').textContent = `${visible.length} ${visible.length === 1 ? 'place' : 'places'} ${view === 'saved' ? 'saved' : view === 'rejected' ? 'ruled out' : 'to explore'}.`;
+      const groups = publishedView ? comparisonGroups(visible).sort((a,b) => {
+        if (priceSort) {
+          const first = comparisonPrice(a), second = comparisonPrice(b);
+          if (first === null && second !== null) return 1;
+          if (second === null && first !== null) return -1;
+          if (first !== null && second !== null) return (first - second) * (sort === 'price-asc' ? 1 : -1);
+        }
+        return Number(b.some(stay => downtownIds.has(stay.id))) - Number(a.some(stay => downtownIds.has(stay.id)));
+      }) : visible.map(stay => [stay]);
+      const saved = stays.filter(stay => choice(stay.id).saved && !choice(stay.id).rejected);
+      document.getElementById('saved-count').textContent = publishedView ? comparisonGroups(saved).length : saved.length;
+      document.getElementById('results-title').textContent = `${groups.length} ${groups.length === 1 ? 'place' : 'places'} ${view === 'saved' ? 'saved' : view === 'rejected' ? 'ruled out' : 'to explore'}.`;
       if (importedDataset) {
-        const uncertain = visible.filter(stay => filterMatch(stay,area,budget) === 1).length;
+        const uncertain = publishedView ? groups.filter(group => group.every(stay => filterMatch(stay,area,budget,true) === 1)).length : visible.filter(stay => filterMatch(stay,area,budget) === 1).length;
         document.getElementById('results-sub').textContent = publishedView ? uncertain ? `${uncertain} ${uncertain === 1 ? 'place has' : 'places have'} details that still need checking.` : ''
           : `Snapshot trip: ${importedDataset.trip.checkIn} to ${importedDataset.trip.checkOut} / ${importedDataset.trip.nights} nights / ${importedDataset.trip.adults} adults. ${uncertain} shown with unconfirmed filter details.${quoteMatches ? '' : ' Changed trip: no matching quotes.'}`;
       }
       const cards = document.getElementById('cards');
+      const openGroups = new Set([...cards.querySelectorAll('[data-property] .room-options[open]')].map(details => details.closest('[data-property]').dataset.property));
       cards.replaceChildren();
       if (!visible.length) {
         const empty = document.createElement('div');
@@ -352,12 +424,12 @@
         }
         cards.append(empty);
       }
-      for (const stay of visible) {
+      const renderStay = (stay,roomOption=false) => {
         const item = choice(stay.id);
         const link = bookingLink(stay);
         const noteUnsaved = unsavedNotes.has(stay.id);
-        const article = document.createElement('article');
-        article.className = 'card';
+        const article = document.createElement(roomOption ? 'div' : 'article');
+        article.className = roomOption ? 'room-option' : 'card';
         article.dataset.id = stay.id;
         article.style.setProperty('--scene',stay.color);
         const kitchenText = importedDataset ? {full:'Full kitchen (listed)',kitchenette:'Kitchenette (listed)',none:'No kitchen (listed)',unknown:'Kitchen unverified'}[stay.amenities.kitchen] : stay.kitchen ? 'Full kitchen' : 'Microwave + fridge';
@@ -372,7 +444,7 @@
           ? `${areaLabels[stay.area]} / checked map estimate: ${stay.proximity.walkingMinutes} min from ${stay.proximity.origin} to ${stay.proximity.destination}; not a step-free-access check`
           : `${importedDataset ? areaLabels[stay.area] : downtownIds.has(stay.id) ? 'Downtown' : 'Wider Port Angeles'} / walking access not checked`;
         const detailHtml = importedDataset ? `<details class="listing-details"><summary>Evidence and missing details</summary><p>${escapeHtml(stay.caution || 'No additional tradeoff recorded.')}</p><p>${escapeHtml(stay.quote.exclusions.length ? 'Excluded charges: ' + stay.quote.exclusions.join('; ') : 'No excluded charges recorded; this is not proof that all fees are included.')}</p>${stay.evidence.map(item => `<p class="evidence-note"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.method.replaceAll('_',' '))} / ${escapeHtml(item.scope)}</a>: ${escapeHtml(item.note)} ${item.checkedAt ? 'Observed ' + escapeHtml(item.checkedAt) : 'Observation time unknown'}.</p>`).join('')}</details>` : `<details class="listing-details"><summary>Price &amp; stay details</summary><p>${escapeHtml(stay.priceNote)} Original quote: Sep 15-22, 2027 for 2 guests.</p><p>${escapeHtml(stay.caution)}</p></details>`;
-        article.innerHTML = publishedView ? publishedCardHtml(stay,item,link,noteUnsaved,filterMatch(stay,area,budget) === 1) : `
+        article.innerHTML = publishedView ? publishedCardHtml(stay,item,link,noteUnsaved,filterMatch(stay,area,budget,true) === 1,roomOption) : `
           <div class="visual" aria-hidden="true">
             <svg viewBox="0 0 350 142"><path d="M0 88 75 34 131 81 220 18 295 77 350 48V142H0Z" fill="#87a99a" opacity=".65"/><path d="M0 111Q160 93 350 115V142H0Z" fill="#639389"/><path d="M104 123V71H232V123Z" fill="#fcf6e8"/><path d="m92 73 77-43 77 43Z" fill="#365e52"/><path d="M119 82h24v23h-24zm39 0h24v23h-24zm40 0h20v41h-20z" fill="#a4bbb0"/><circle cx="295" cy="30" r="15" fill="#f3d99b"/></svg>
             <span class="badge">${escapeHtml(stay.badge)}</span>
@@ -412,7 +484,21 @@
           article.querySelector('.notes summary').textContent = item.note ? (saved ? 'Your notes (saved here)' : 'Your notes (not saved)') : 'Your notes';
           article.querySelector('.note-state').textContent = saved ? 'Saved automatically in this browser.' : 'Not saved to browser storage. Kept for this visit only.';
         });
-        cards.append(article);
+        return article;
+      };
+      for (const group of groups) {
+        if (publishedView && isPortAngelesInn(group[0])) {
+          const article = document.createElement('article');
+          article.className = 'card';
+          article.dataset.property = 'port-angeles-inn';
+          article.innerHTML = publishedInnHtml(group,stays.filter(isPortAngelesInn));
+          const options = article.querySelector('.room-options');
+          options.open = openGroups.has(article.dataset.property);
+          for (const stay of [...group.filter(stay => stay.unit !== null),...group.filter(stay => stay.unit === null)]) {
+            article.querySelector('.room-list').append(renderStay(stay,true));
+          }
+          cards.append(article);
+        } else cards.append(renderStay(group[0]));
       }
     }
     document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
