@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "datasetId": "2027-09-15_2027-09-22_2-adults_review_20261125T184820858Z_manual",
-  "createdAt": "2026-11-25T18:48:20.858Z",
+  "datasetId": "2027-09-15_2027-09-22_2-adults_review_20261127T214059469Z_manual",
+  "createdAt": "2026-11-27T21:40:59.469Z",
   "trip": {
     "checkIn": "2027-09-15",
     "checkOut": "2027-09-22",
@@ -25,51 +25,57 @@
         "joyce"
       ],
       "status": "leads_only",
-      "details": "11 indexed searches including area discovery and listing follow-ups. Three new entire rentals admitted; seven existing units rechecked. Joyce query included unrelated foreign/host-name hits excluded. Direct automated Airbnb access not authorized; no rental quotes/availability or new route/address corroboration. Crawl ages retained.",
-      "checkedAt": "2026-11-25T18:48:20.858Z"
+      "details": "Eight indexed searches: Port Angeles discovery/downtown, Sequim, Joyce and four listing follow-ups. Two new Sequim entire rentals admitted; Georgiana entire-home status clarified; selected baseline facts rechecked. Empty initial search and snippet-free West Side result explicit. Index crawl ages retained; no direct provider access, rental quotes or live availability.",
+      "checkedAt": "2026-11-27T21:40:59.469Z"
     },
     {
       "provider": "vrbo",
       "areas": [
+        "downtown_port_angeles",
         "wider_port_angeles",
         "sequim",
         "joyce"
       ],
       "status": "leads_only",
-      "details": "Three indexed searches: broad regional discovery, one empty exact follow-up, one own-listing dateless result. Sea You Soon admitted with own Entire home/amenity evidence; related carousel and unrelated North Carolina property ignored. Downtown-specific coverage unfinished. Direct access not authorized; no dated quote.",
-      "checkedAt": "2026-11-25T18:48:20.858Z"
+      "details": "Five indexed searches: regional discovery, Joyce, Sequim townhouse and downtown discovery/exact follow-up. Townhouse kitchen, laundry and upstairs-bed details enriched. No new Vrbo units admitted: carousel-only amenities and Central basecamp entire-unit ambiguity withheld; exact follow-up empty. Joyce namesake outside the target area not admitted. Direct access permission unestablished; no dated quotes.",
+      "checkedAt": "2026-11-27T21:40:59.469Z"
     },
     {
       "provider": "booking",
       "areas": [
         "downtown_port_angeles",
         "wider_port_angeles",
-        "sequim"
+        "sequim",
+        "joyce"
       ],
       "status": "leads_only",
-      "details": "Three indexed searches: regional discovery, exact two-bedroom holiday-home follow-up and existing Red Lion follow-up. One Port Angeles entire house added. No direct Booking.com access, selected-trip quotes or Joyce-specific search. Advertised/category prices not imported.",
-      "checkedAt": "2026-11-25T18:48:20.858Z"
+      "details": "Four indexed searches: regional hotels/rentals, individual holiday homes, Joyce and Red Lion follow-up. Two supported Port Angeles holiday homes added. Red Lion property-wide microwave/fridge evidence does not establish the Annex room kitchen. Joyce-specific query returned city hotels, not a Joyce unit. Olympic Lodge exact room unresolved. No direct provider access, prices or availability.",
+      "checkedAt": "2026-11-27T21:40:59.469Z"
     },
     {
       "provider": "brigadoon",
       "areas": [
+        "downtown_port_angeles",
         "wider_port_angeles",
         "sequim",
         "joyce"
       ],
       "status": "leads_only",
-      "details": "Shared manager discovery plus named-unit query returned catalogue/region pages only. No supported individual units imported. Earlier direct-fetch 403 not retried or bypassed. Joyce searched but no individual lead; downtown-specific coverage unfinished.",
-      "checkedAt": "2026-11-25T18:48:20.858Z",
+      "details": "Shared regional manager discovery and named Lincoln Lounge/Joyce follow-up returned catalogues/attractions only. No individually supported units admitted. Earlier direct 403 not retried or bypassed; no quotes.",
+      "checkedAt": "2026-11-27T21:40:59.469Z",
       "url": "https://sequimrentals.com/our-listings"
     },
     {
       "provider": "olympic_coast_retreats",
       "areas": [
-        "wider_port_angeles"
+        "downtown_port_angeles",
+        "wider_port_angeles",
+        "sequim",
+        "joyce"
       ],
       "status": "partially_verified",
-      "details": "Shared manager discovery plus indexed unit query; two official individual pages re-read (7th & Sea/Olympic View). Known facts retained and kitchen-category conflict explicit. No selected rental dates/quote or authorized repeatable quote route: rental-price phase BLOCKED / NOT RUN. Other-area coverage unfinished.",
-      "checkedAt": "2026-11-25T18:48:20.858Z",
+      "details": "Shared regional manager discovery, indexed unit query and two official individual page reads. 7th & Sea and Olympic View facts rechecked; full-kitchen description versus Kitchenette category conflict retained for 7th & Sea. Unit laundry listed, private location unconfirmed. Only Port Angeles individual evidence obtained; other areas unfinished. Rental-price phase BLOCKED / NOT RUN: no authorized date-specific quote route established.",
+      "checkedAt": "2026-11-27T21:40:59.469Z",
       "url": "https://olycoastnw.com/"
     },
     {
@@ -78,8 +84,8 @@
         "downtown_port_angeles"
       ],
       "status": "verified",
-      "details": "Official homepage booking link -> LetsBook. Three existing exact room-only choices rechecked twice, before/after reload: Sep15-22,2027/7 nights/2 adults/0 children/USD, listed taxes/fees included, unchanged totals. No room selected/reserved. Verified covers these three choices only, not exhaustive inventory.",
-      "checkedAt": "2026-11-25T18:48:20.858Z",
+      "details": "Official hotel homepage booking link redirected to LetsBook. Three existing exact room-only choices observed twice before/after source reload for Sep15-22,2027,seven nights,two adults,zero children,USD. Dates/year and guests checked in dialogs. Totals unchanged, including displayed taxes/fees. Initial hydration errors resolved as the page loaded; no workaround or room selection. Verified covers only these three room choices, not exhaustive inventory.",
+      "checkedAt": "2026-11-27T21:40:52.950Z",
       "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0"
     },
     {
@@ -292,6 +298,20 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Indexed listing reviewed; crawl 2026-11-21. Entire rental unit in downtown Port Angeles above Foghorn Olive Oil Co.; fully equipped kitchen and explicit short walk to downtown dining/shops. Walk claim is not a checked route; prior building evidence retained."
+        },
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "walking"
+          ],
+          "url": "https://www.airbnb.com/rooms/1410974955818702817",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own indexed listing: entire rental unit in downtown Port Angeles, above Foghorn Olive Oil Co.; fully equipped kitchen; explicit short walk to downtown. Crawl 2026-11-21T17:41Z. Existing building corroboration retained, rental entrance/route not rechecked."
         }
       ],
       "tradeoffs": [
@@ -753,6 +773,17 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Indexed listing reviewed; crawl 2026-11-24. Entire three-bedroom farmhouse, well-equipped kitchen, free parking, five acres adjacent to Olympic Adventure Trail. Precise regional bucket and laundry remain unknown; no dated quote."
+        },
+        {
+          "fields": [
+            "listing",
+            "kitchen"
+          ],
+          "url": "https://www.airbnb.com/rooms/18778078",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Indexed farmhouse description confirms well-equipped kitchen and three-bedroom farmhouse on five acres. Crawl 2026-11-27T09:20Z. Title/nearby attractions do not establish Joyce geography; area remains unknown."
         }
       ],
       "tradeoffs": [
@@ -836,18 +867,18 @@
       "area": "sequim",
       "type": "entire_rental",
       "amenities": {
-        "kitchen": "unknown",
+        "kitchen": "full",
         "washer": {
-          "state": "unknown",
-          "location": "unknown"
+          "state": "yes",
+          "location": "in_unit"
         },
         "dryer": {
-          "state": "unknown",
-          "location": "unknown"
+          "state": "yes",
+          "location": "in_unit"
         },
         "parking": "unknown",
         "bedrooms": 2,
-        "stairs": "unknown"
+        "stairs": "yes"
       },
       "proximity": {
         "walkable": "unknown",
@@ -887,11 +918,28 @@
           "scope": "unit",
           "checkedAt": "2026-11-22T05:35:24Z",
           "note": "Primary description identifies a two-bedroom, 2.5-bath Sequim townhome with king/queen beds upstairs. Kitchen is described as stocked with cooking supplies, but appliances are not established. Laundry in related listings was ignored. Index crawl: 2026-10-22."
+        },
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "washer",
+            "dryer",
+            "stairs"
+          ],
+          "url": "https://www.vrbo.com/5198812",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own townhome description: Sequim, two bedrooms/2.5 baths; fully stocked kitchen; Washer/Dryer in the laundry room; King and Queen beds upstairs. Crawl 2026-10-22T01:24Z. Related rentals and October one-night rate ignored."
         }
       ],
       "tradeoffs": [
         "Bedrooms upstairs; accessibility not independently checked.",
-        "Kitchen completeness and laundry unverified."
+        "Kitchen completeness and laundry unverified.",
+        "Bedrooms upstairs; own townhome laundry room lists washer and dryer. Indexed facts, not a live quote."
       ]
     },
     {
@@ -1067,6 +1115,22 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Official individual page re-read: vacation home in Port Angeles, 4BR/2BA, full kitchen, washer/dryer, walk-to-town claim. No private-laundry location or exact walking route established. Amenity list also says Kitchenette; prior explicit full-kitchen description retained with conflict."
+        },
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "bedrooms",
+            "kitchen",
+            "washer",
+            "dryer"
+          ],
+          "url": "https://olycoastnw.com/en/7th-sea-olympic-mid-century-scenic-getaway",
+          "method": "listing_page",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Official individual Port Angeles vacation-home page re-read: four bedrooms, full kitchen in description but Kitchenette in amenities, washer/dryer. Conflict retained; laundry location private/shared unconfirmed. No date-specific quote."
         }
       ],
       "tradeoffs": [
@@ -1250,6 +1314,17 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Indexed Booking.com listing reviewed; crawl 2026-11-24. Port Angeles town-centre hotel; King Room - Annex listed. No selected trip dates/price displayed. Other-room amenities and reviews not assigned to annex king."
+        },
+        {
+          "fields": [
+            "listing",
+            "area"
+          ],
+          "url": "https://www.booking.com/hotel/us/red-lion-port-angeles.html",
+          "method": "search_result",
+          "scope": "property",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Indexed property page confirms downtown Port Angeles hotel; microwave/refrigerator in property highlights and reviews do not establish Annex King room equipment. Crawl 2026-11-27T14:05Z. No quote or room-amenity promotion."
         }
       ],
       "tradeoffs": [
@@ -1659,7 +1734,7 @@
         "checkOut": "2027-09-22",
         "adults": 2,
         "unit": "1 Queen Size Bed NON Harbor View / Room only",
-        "checkedAt": "2026-11-25T18:47:09.210Z",
+        "checkedAt": "2026-11-27T21:40:52.950Z",
         "availability": "available",
         "totalStatus": "complete",
         "exclusions": []
@@ -1779,6 +1854,18 @@
           "scope": "property",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Official Inn homepage re-read: hilltop downtown; steps at northwest corner lead to downtown, walking distance to ferry. Elevator to rooms above ground floor; all rooms have microwave/refrigerator, no air conditioning. Existing room/access facts retained; route not rechecked."
+        },
+        {
+          "fields": [
+            "quote",
+            "availability",
+            "unit"
+          ],
+          "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0",
+          "method": "browser",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:52.950Z",
+          "note": "Exact existing Room only unit: Sep15-22,2027;7 nights;2 adults/0 children;USD 1807.67 including displayed taxes/fees. Same total before/after source reload at 2026-11-27T21:39:43.936Z/2026-11-27T21:40:52.950Z; available-room card. No selection/reservation."
         }
       ],
       "tradeoffs": [
@@ -1999,6 +2086,18 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Indexed listing reviewed; crawl 2026-11-22. Two-bedroom cottage, fully equipped kitchen minus dishwasher; explicit short walk to downtown Port Angeles/ferry. This hit does not explicitly establish entire-unit scope; legacy unknown type retained."
+        },
+        {
+          "fields": [
+            "listing",
+            "kitchen",
+            "bedrooms"
+          ],
+          "url": "https://www.airbnb.com/rooms/16167151",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Indexed own cottage description: two bedrooms, fully equipped kitchen minus dishwasher. Crawl 2026-11-26T14:36Z. Review mentions laundry rooms without identifying machines/private use; entire-unit status remains unknown."
         }
       ],
       "tradeoffs": [
@@ -2014,7 +2113,7 @@
       "url": "https://www.airbnb.com/rooms/48882833",
       "unit": "Georgiana Cottage",
       "area": "wider_port_angeles",
-      "type": "unknown",
+      "type": "entire_rental",
       "amenities": {
         "kitchen": "full",
         "washer": {
@@ -2067,6 +2166,20 @@
           "scope": "unit",
           "checkedAt": "2026-11-22T19:03:49.299Z",
           "note": "Indexed Port Angeles home: full well-stocked kitchen with LG appliances, explicitly in-unit washer and private fenced backyard. Dryer, bedroom count and entire-place header not exposed. Index crawl 2026-11-22; not a direct page or September availability check."
+        },
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "washer"
+          ],
+          "url": "https://www.airbnb.com/rooms/48882833",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Indexed own listing: Entire home in Port Angeles, Washington; full kitchen, private backyard and in-unit washer. Crawl 2026-11-27T13:43Z. Dryer not evidenced; five-minute walk is to waterfront trail, not downtown."
         }
       ],
       "tradeoffs": [
@@ -2137,6 +2250,20 @@
           "scope": "unit",
           "checkedAt": "2026-11-22T19:03:49.299Z",
           "note": "Indexed entire Port Angeles cottage: 2 bedrooms, 1 bath, queen beds, full kitchen, fenced backyard and free parking for 4 cars. Claimed walking minutes not certified. Index crawl 2026-11-21; not a direct page or September availability check."
+        },
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "walking"
+          ],
+          "url": "https://www.airbnb.com/rooms/47071441",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own indexed listing: entire two-bedroom cottage, commercial district on Front Street, full kitchen/private parking; five-minute downtown walk is a listing claim, not a route. Crawl 2026-11-21T10:41Z."
         }
       ],
       "tradeoffs": [
@@ -3178,6 +3305,17 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Indexed listing reviewed; crawl 2026-10-26. Property explicitly outside Joyce at Whiskey Creek Beach NW; bedroom plus upstairs loft sleeping room. Existing amenity classifications retained; upstairs loft is an access consideration. No dated quote."
+        },
+        {
+          "fields": [
+            "listing",
+            "area"
+          ],
+          "url": "https://www.airbnb.com/rooms/18428532",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own indexed description: just outside Joyce at Whiskey Creek Beach NW; quiet remote base. Crawl 2026-10-26T06:16Z. Retained unit facts not freshly rechecked; no availability inference."
         }
       ],
       "tradeoffs": [
@@ -3264,6 +3402,22 @@
           "scope": "unit",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Official individual page re-read: vacation home in Port Angeles; 2 bedrooms, washer/dryer. Amenity list says Kitchenette plus stove, oven and refrigerator. Existing kitchenette classification retained; location/private laundry unverified. No selected dates/quote shown."
+        },
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "bedrooms",
+            "kitchen",
+            "washer",
+            "dryer"
+          ],
+          "url": "https://olycoastnw.com/en/olympic-view",
+          "method": "listing_page",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Official individual Port Angeles vacation-home page re-read: two bedrooms, Kitchenette with stove/oven/refrigerator, washing machine/clothes dryer. Laundry private/shared location unconfirmed; no date-specific quote."
         }
       ],
       "tradeoffs": [
@@ -3450,7 +3604,7 @@
         "checkOut": "2027-09-22",
         "adults": 2,
         "unit": "1 Queen Size Bed Harbor View / Room only",
-        "checkedAt": "2026-11-25T18:47:09.210Z",
+        "checkedAt": "2026-11-27T21:40:52.950Z",
         "availability": "available",
         "totalStatus": "complete",
         "exclusions": []
@@ -3545,6 +3699,18 @@
           "scope": "property",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Official Inn homepage re-read: hilltop downtown; steps at northwest corner lead to downtown, walking distance to ferry. Elevator to rooms above ground floor; all rooms have microwave/refrigerator, no air conditioning. Existing room/access facts retained; route not rechecked."
+        },
+        {
+          "fields": [
+            "quote",
+            "availability",
+            "unit"
+          ],
+          "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0",
+          "method": "browser",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:52.950Z",
+          "note": "Exact existing Room only unit: Sep15-22,2027;7 nights;2 adults/0 children;USD 2192.49 including displayed taxes/fees. Same total before/after source reload at 2026-11-27T21:39:43.936Z/2026-11-27T21:40:52.950Z; available-room card. No selection/reservation."
         }
       ],
       "tradeoffs": [
@@ -3597,7 +3763,7 @@
         "checkOut": "2027-09-22",
         "adults": 2,
         "unit": "1 King Size Bed Harbor View / Room only",
-        "checkedAt": "2026-11-25T18:47:09.210Z",
+        "checkedAt": "2026-11-27T21:40:52.950Z",
         "availability": "available",
         "totalStatus": "complete",
         "exclusions": []
@@ -3692,6 +3858,18 @@
           "scope": "property",
           "checkedAt": "2026-11-25T18:48:20.858Z",
           "note": "Official Inn homepage re-read: hilltop downtown; steps at northwest corner lead to downtown, walking distance to ferry. Elevator to rooms above ground floor; all rooms have microwave/refrigerator, no air conditioning. Existing room/access facts retained; route not rechecked."
+        },
+        {
+          "fields": [
+            "quote",
+            "availability",
+            "unit"
+          ],
+          "url": "https://letsbook.me/booking/portangelesinn?checkin=2027-09-15&checkout=2027-09-22&adults=2&children=0",
+          "method": "browser",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:52.950Z",
+          "note": "Exact existing Room only unit: Sep15-22,2027;7 nights;2 adults/0 children;USD 2428.71 including displayed taxes/fees. Same total before/after source reload at 2026-11-27T21:39:43.936Z/2026-11-27T21:40:52.950Z; available-room card. No selection/reservation."
         }
       ],
       "tradeoffs": [
@@ -4045,6 +4223,276 @@
       "tradeoffs": [
         "No date-specific rental price or availability verified.",
         "Washer/dryer listed; private in-unit use unconfirmed."
+      ]
+    },
+    {
+      "id": "airbnb:4333237:entire-cabin",
+      "name": "The Cottage, Bond Ranch Retreat, Olympic Peninsula",
+      "provider": "airbnb",
+      "url": "https://www.airbnb.com/rooms/4333237",
+      "unit": "Entire cabin",
+      "area": "sequim",
+      "type": "entire_rental",
+      "amenities": {
+        "kitchen": "kitchenette",
+        "washer": {
+          "state": "unknown",
+          "location": "unknown"
+        },
+        "dryer": {
+          "state": "unknown",
+          "location": "unknown"
+        },
+        "parking": "unknown",
+        "bedrooms": null,
+        "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown",
+        "basis": "unknown",
+        "walkingMinutes": null,
+        "origin": null,
+        "destination": null,
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
+      },
+      "quote": {
+        "status": "not_verified",
+        "amount": null,
+        "currency": null,
+        "basis": "unknown",
+        "checkIn": null,
+        "checkOut": null,
+        "adults": null,
+        "unit": null,
+        "checkedAt": null,
+        "availability": "unknown",
+        "totalStatus": "unknown",
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen"
+          ],
+          "url": "https://www.airbnb.com/rooms/4333237",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own indexed listing: Entire cabin in Sequim, Washington, three guests; country/ranch setting, own little kitchen with gas stove/fridge/small dining table. Crawl 2026-11-26T18:33Z. Kitchenette classification conservative; laundry/bedrooms not established."
+        }
+      ],
+      "tradeoffs": [
+        "Indexed unit/location evidence only; September 15-22, 2027 price and availability unverified. Address and downtown walking route not independently checked.",
+        "Country/ranch setting outside town; small cooking area classified kitchenette, not a verified full kitchen. Laundry unconfirmed."
+      ]
+    },
+    {
+      "id": "airbnb:1402204317974968649:entire-home",
+      "name": "Honeycomb Cottage",
+      "provider": "airbnb",
+      "url": "https://www.airbnb.com/rooms/1402204317974968649",
+      "unit": "Entire private residence",
+      "area": "sequim",
+      "type": "entire_rental",
+      "amenities": {
+        "kitchen": "full",
+        "washer": {
+          "state": "yes",
+          "location": "in_unit"
+        },
+        "dryer": {
+          "state": "yes",
+          "location": "in_unit"
+        },
+        "parking": "free",
+        "bedrooms": null,
+        "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown",
+        "basis": "unknown",
+        "walkingMinutes": null,
+        "origin": null,
+        "destination": null,
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
+      },
+      "quote": {
+        "status": "not_verified",
+        "amount": null,
+        "currency": null,
+        "basis": "unknown",
+        "checkIn": null,
+        "checkOut": null,
+        "adults": null,
+        "unit": null,
+        "checkedAt": null,
+        "availability": "unknown",
+        "totalStatus": "unknown",
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "washer",
+            "dryer",
+            "parking"
+          ],
+          "url": "https://www.airbnb.com/rooms/1402204317974968649",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Two own indexed results: Entire home in Sequim, Washington; sole access to entire private residence. Fully stocked kitchen/range/oven; laundry room washing machine/dryer for guests; free parking. Crawl 2026-11-27T06:30Z. No live dates/price."
+        }
+      ],
+      "tradeoffs": [
+        "Indexed unit/location evidence only; September 15-22, 2027 price and availability unverified. Address and downtown walking route not independently checked.",
+        "Listing says carbon monoxide alarm unavailable; confirm safety arrangements with the source before reserving. Sequim downtown proximity is not Port Angeles walkability."
+      ]
+    },
+    {
+      "id": "booking:us:pa-harts-desire:three-bedroom-holiday-home",
+      "name": "PA Harts-Desire",
+      "provider": "booking",
+      "url": "https://www.booking.com/hotel/us/pa-harts-desire.html",
+      "unit": "Three-bedroom holiday home",
+      "area": "wider_port_angeles",
+      "type": "entire_rental",
+      "amenities": {
+        "kitchen": "full",
+        "washer": {
+          "state": "unknown",
+          "location": "unknown"
+        },
+        "dryer": {
+          "state": "unknown",
+          "location": "unknown"
+        },
+        "parking": "free",
+        "bedrooms": 3,
+        "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown",
+        "basis": "unknown",
+        "walkingMinutes": null,
+        "origin": null,
+        "destination": null,
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
+      },
+      "quote": {
+        "status": "not_verified",
+        "amount": null,
+        "currency": null,
+        "basis": "unknown",
+        "checkIn": null,
+        "checkOut": null,
+        "adults": null,
+        "unit": null,
+        "checkedAt": null,
+        "availability": "unknown",
+        "totalStatus": "unknown",
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "parking",
+            "bedrooms"
+          ],
+          "url": "https://www.booking.com/hotel/us/pa-harts-desire.html",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own indexed property: Port Angeles spacious holiday home, three bedrooms/two bathrooms, private entrance/private fully equipped kitchen, free on-site private parking. Crawl 2026-11-27T04:20Z. Laundry and dated price not established."
+        }
+      ],
+      "tradeoffs": [
+        "Indexed unit/location evidence only; September 15-22, 2027 price and availability unverified. Address and downtown walking route not independently checked."
+      ]
+    },
+    {
+      "id": "booking:us:port-angeles-abode-with-yard-and-guest-house:five-bedroom-holiday-home",
+      "name": "Port Angeles Abode w/ Yard & Guest House!",
+      "provider": "booking",
+      "url": "https://www.booking.com/hotel/us/port-angeles-abode-with-yard-and-guest-house-port-angeles.en-gb.html",
+      "unit": "Five-bedroom holiday home",
+      "area": "wider_port_angeles",
+      "type": "entire_rental",
+      "amenities": {
+        "kitchen": "full",
+        "washer": {
+          "state": "yes",
+          "location": "unknown"
+        },
+        "dryer": {
+          "state": "unknown",
+          "location": "unknown"
+        },
+        "parking": "free",
+        "bedrooms": 5,
+        "stairs": "unknown"
+      },
+      "proximity": {
+        "walkable": "unknown",
+        "basis": "unknown",
+        "walkingMinutes": null,
+        "origin": null,
+        "destination": null,
+        "description": null,
+        "locationEvidence": "listing_claim",
+        "downtownWalkClaim": false
+      },
+      "quote": {
+        "status": "not_verified",
+        "amount": null,
+        "currency": null,
+        "basis": "unknown",
+        "checkIn": null,
+        "checkOut": null,
+        "adults": null,
+        "unit": null,
+        "checkedAt": null,
+        "availability": "unknown",
+        "totalStatus": "unknown",
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "fields": [
+            "listing",
+            "unit",
+            "area",
+            "kitchen",
+            "washer",
+            "parking",
+            "bedrooms"
+          ],
+          "url": "https://www.booking.com/hotel/us/port-angeles-abode-with-yard-and-guest-house-port-angeles.en-gb.html",
+          "method": "search_result",
+          "scope": "unit",
+          "checkedAt": "2026-11-27T21:40:59.469Z",
+          "note": "Own indexed property: Port Angeles holiday home, five bedrooms/three bathrooms/living room, private fully equipped kitchen, washing machine and free private parking. Crawl 2026-11-02T00:46Z. Dryer/private laundry location and dated price not established."
+        }
+      ],
+      "tradeoffs": [
+        "Indexed unit/location evidence only; September 15-22, 2027 price and availability unverified. Address and downtown walking route not independently checked."
       ]
     }
   ]
